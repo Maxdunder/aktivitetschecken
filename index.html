@@ -1,19 +1,104 @@
 <!DOCTYPE html>
 <html lang="se">
-  <head>
+<head>
+    
+</head>
+<body>
+  
+    <script src="index.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalistisk karta</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Aktivitets Checken</title>
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-   <div class="header">
-     ggs
-     </div>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+    <style>
+       
+        
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="sidetitle">
+            <h2>Aktivitets Checken</h2>
+        </div>
+        </div>
     <div class="search">
         oo
     </div>
-    <script src="index.js"></script>
-  </body>
+    <div class="map-wrapper">
+        <div class="map-inner">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script>
+        const map = new maplibregl.Map({
+        container: 'map',
+        style: 'https://tiles.openfreemap.org/styles/liberty',
+        center: [17.3147, 62.3898],
+        zoom: 14
+        });
+
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+        map.on('error', (e) => console.error('Kartfel:', e.error));
+
+        map.on('load', () => {
+        for (const layer of map.getStyle().layers) {
+        const id = layer.id.toLowerCase();
+
+        try {
+        if (layer.type === 'line' &&
+        (id.includes('road') || id.includes('street') || id.includes('highway'))) {
+        map.setPaintProperty(layer.id, 'line-color', '#d8dde0');
+        map.setPaintProperty(layer.id, 'line-opacity', 0.75);
+        }
+        if (layer.type === 'fill' &&
+        (id.includes('park') || id.includes('landuse') || id.includes('green'))) {
+        map.setPaintProperty(layer.id, 'fill-color', '#edf4ef');
+        map.setPaintProperty(layer.id, 'fill-opacity', 0.8);
+        }
+        if (layer.type === 'fill' &&
+        (id.includes('water') || id.includes('ocean') || id.includes('lake'))) {
+        map.setPaintProperty(layer.id, 'fill-color', '#edf7f8');
+        map.setPaintProperty(layer.id, 'fill-opacity', 0.9);
+        }
+        if (layer.type === 'fill' && id.includes('building')) {
+        map.setPaintProperty(layer.id, 'fill-color', '#f8f8f6');
+        map.setPaintProperty(layer.id, 'fill-opacity', 0.85);
+        }
+        } catch (e) {
+        console.log('Kunde inte styla:', layer.id);
+        }
+        }
+        });
+
+        function addMarker(longitude, latitude, title) {
+        const element = document.createElement('div');
+        element.className = 'location-marker';
+
+        const popup = new maplibregl.Popup({ offset: 18 })
+        .setHTML(`<strong>${title}</strong>`);
+
+        new maplibregl.Marker({ element })
+        .setLngLat([longitude, latitude])
+        .setPopup(popup)
+        .addTo(map);
+        }
+
+        addMarker(17.311523909612948, 62.39005200377482, 'Plats 1');
+        addMarker(17.30373085233, 62.38855180836299, 'Plats 2');
+    </script>
+
+</body>
 </html>
