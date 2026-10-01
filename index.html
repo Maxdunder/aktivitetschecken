@@ -66,6 +66,27 @@
         console.log('Kunde inte styla:', layer.id);
         }
         }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+
+                    map.flyTo({
+                        center: [userLng, userLat],
+                        zoom: 14
+                    });
+
+                    addUserMarker(userLng, userLat);
+                },
+                (error) => {
+                    console.error('Kunde inte hämta plats:', error.message);
+                }
+            );
+        } else {
+            console.error('Geolocation stöds inte i denna webbläsare');
+        }
         });
 
         function addMarker(longitude, latitude, title) {
@@ -74,6 +95,19 @@
 
         const popup = new maplibregl.Popup({ offset: 18 })
         .setHTML(`<strong>${title}</strong>`);
+
+        new maplibregl.Marker({ element })
+        .setLngLat([longitude, latitude])
+        .setPopup(popup)
+        .addTo(map);
+        }
+
+        function addUserMarker(longitude, latitude) {
+        const element = document.createElement('div');
+        element.className = 'user-marker';
+
+        const popup = new maplibregl.Popup({ offset: 18 })
+        .setHTML('<strong>Din plats</strong>');
 
         new maplibregl.Marker({ element })
         .setLngLat([longitude, latitude])
