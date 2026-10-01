@@ -1,0 +1,18 @@
+body {
+  margin: 0; 
+  padding: 0; 
+}
+.header {
+    background-color: floralwhite;
+    height: 60px;
+    width: 100%;
+}
+.search {
+    margin-top: 12px;
+    margin-left: 16px;
+    height: 40px;
+    width: calc(100% - 32px);
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
