@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html lang="se">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    <link rel="stylesheet" href="login.css">
-  </head>
-  <body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registrera</title>
+        <link rel="stylesheet" href="Registrera.css">
+        </head>
+    <body>
+        <header>
+            <h1>Registrera</h1>
+        </header>
+        <div class="registrera-container">
+            <form action="registrera.php" method="post">
+                <label for="username">Användarnamn:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="email">E-post:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Telefonnummer:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="password">Lösenord:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <label for="confirm_password">Bekräfta lösenord:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+
+                <button class="registrera-button" type="submit">Registrera</button>
+            </form>
+        </div>
+    </body>
+</html>
     
