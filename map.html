@@ -49,6 +49,16 @@
             cursor: pointer;
         }
 
+        .user-location-marker {
+            width: 30px;
+            height: 30px;
+            background: #0066cc;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.20);
+            cursor: pointer;
+        }
+
         .maplibregl-popup-content {
             padding: 15px 18px;
             border-radius: 14px;
@@ -67,18 +77,27 @@
 </div>
 
 <script>
-    const map = new maplibregl.Map({
-        container: 'map',
-        style: 'https://tiles.openfreemap.org/styles/liberty',
-        center: [17.3147, 62.3898],
-        zoom: 14
-    });
+    let map;
 
-    map.addControl(new maplibregl.NavigationControl(), 'top-right');
+    // Initialize map with default center
+    function initMap(center) {
+        map = new maplibregl.Map({
+            container: 'map',
+            style: 'https://tiles.openfreemap.org/styles/liberty',
+            center: center,
+            zoom: 14
+        });
 
-    map.on('error', (e) => console.error('Kartfel:', e.error));
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-    map.on('load', () => {
+        map.on('error', (e) => console.error('Kartfel:', e.error));
+
+        map.on('load', () => {
+            styleMapLayers();
+        });
+    }
+
+    function styleMapLayers() {
         for (const layer of map.getStyle().layers) {
             const id = layer.id.toLowerCase();
 
@@ -106,7 +125,7 @@
                 console.log('Kunde inte styla:', layer.id);
             }
         }
-    });
+    }
 
     function addMarker(longitude, latitude, title) {
         const element = document.createElement('div');
@@ -121,8 +140,56 @@
             .addTo(map);
     }
 
-    addMarker(11.974, 57.715, 'Plats 1');
-    addMarker(11.975, 57.700, 'Plats 2');
+    function addUserMarker(longitude, latitude) {
+        const element = document.createElement('div');
+        element.className = 'user-location-marker';
+
+        const popup = new maplibregl.Popup({ offset: 20 })
+            .setHTML(`<strong>Din plats</strong>`);
+
+        new maplibregl.Marker({ element })
+            .setLngLat([longitude, latitude])
+            .setPopup(popup)
+            .addTo(map);
+    }
+
+    // Get user's location
+    function getUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    console.log('Användarposition:', latitude, longitude);
+                    
+                    // Initialize map with user's location
+                    initMap([longitude, latitude]);
+                    
+                    // Add a marker for user's location
+                    addUserMarker(longitude, latitude);
+                    
+                    // Add other markers
+                    addMarker(11.974, 57.715, 'Plats 1');
+                    addMarker(11.975, 57.700, 'Plats 2');
+                },
+                (error) => {
+                    console.error('Kunde inte få användarposition:', error);
+                    // Fallback to default center if geolocation fails
+                    initMap([17.3147, 62.3898]);
+                    addMarker(11.974, 57.715, 'Plats 1');
+                    addMarker(11.975, 57.700, 'Plats 2');
+                }
+            );
+        } else {
+            console.error('Geolocation stöds inte av denna webbläsare');
+            // Fallback to default center
+            initMap([17.3147, 62.3898]);
+            addMarker(11.974, 57.715, 'Plats 1');
+            addMarker(11.975, 57.700, 'Plats 2');
+        }
+    }
+
+    // Start the app
+    getUserLocation();
 </script>
 
 </body>
