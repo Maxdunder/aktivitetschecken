@@ -2,11 +2,16 @@ body {
   margin: 0; 
   padding: 0; 
 }
-.header{
-color: blue;
-background-color: black;
-height: 30px;
-width: 100%;
-padding: -10px;
-margin: -10px;
+.header {
+    background-color: floralwhite;
+    height: 60px;
+    width: 100%;
+}
+.search {
+    margin: 8px;
+    margin-right: 16px;
+    height: 30px;
+    width: 100%;
+    background-color: #f1f1f1;
+    border-radius: 8px;
 }
