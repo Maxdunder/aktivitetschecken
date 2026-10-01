@@ -1,2 +1,75 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-  
+html {
+    height: 100vh;
+}
+
+/* Utseende för hela sidan */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111318;
+    color: #ffffff;
+}
+
+/* Utseende för headern */  
+header {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Utseennde för allt inom registrera-container */
+.registrera-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+}
+
+/* Utseende för formulär */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #1b1e26;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+/* Utseende för input-fält */
+input {
+    font-weight: bold;
+    background: #1b1e26;
+    color: #ffffff;
+    border: 1px solid #3a3f4b;
+    border-radius: 6px;
+    padding: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Utseende för input-fält när man klickar på dem för att fylla i */
+input:focus {
+    border-color: #ffffff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Utseende för submit-knappen */
+.registrera-button {
+    background: #5865f2;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
