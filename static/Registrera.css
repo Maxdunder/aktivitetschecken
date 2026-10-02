@@ -73,3 +73,19 @@ input:focus {
     cursor: pointer;
     transition: 0.2s;
 }
+
+/* Utseende för login-länken i regestrera sidan, och regestrera-länken i login sidan */
+.Login-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    text-decoration: none;
+    background: #5865f2;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
