@@ -248,3 +248,23 @@ body {
 .activity-button:hover {
     background-color: #125537;
 }
+.aktivbuttoncont {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.aktivbutton {
+    display: inline-block;
+    padding: 10px 16px;
+    color: #ffffff;
+    background-color: #176b45;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.aktivbutton:hover {
+    background-color: #125537;
+}
