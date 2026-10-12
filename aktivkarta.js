@@ -52,8 +52,12 @@ const map = new maplibregl.Map({
              addUserMarker(userLng, userLat);
          },
          (error) => {
-             console.error('Kunde inte hämta plats:', error.message);
-         },
+    console.error('Kunde inte hämta plats:', error.message);
+    map.flyTo({
+        center: [17.3147, 62.3898],
+        zoom: 14
+    });
+},
          {
             enableHighAccuracy: false,
             timeout: 10000,
