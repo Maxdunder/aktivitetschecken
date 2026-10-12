@@ -10,12 +10,11 @@ const fallbackCenter = [17.3147, 62.3898];
  map.on('error', (e) => console.error('Kartfel:', e.error));
 
 map.on('load', () => {
-  if (!navigator.geolocation) {
-    console.warn('Geolocation stöds inte i denna webbläsare');
-    map.flyTo({ center: fallbackCenter, zoom: 12 });
-    return;
-  }
-
+  // Style the map layers
+  const style = map.getStyle();
+  if (style.layers) {
+    style.layers.forEach(layer => {
+      const id = layer.id;
  try {
  if (layer.type === 'line' &&
  (id.includes('road') || id.includes('street') || id.includes('highway'))) {
@@ -36,10 +35,11 @@ map.on('load', () => {
  map.setPaintProperty(layer.id, 'fill-color', '#f8f8f6');
  map.setPaintProperty(layer.id, 'fill-opacity', 0.85);
  }
- } catch (e) {
- console.log('Kunde inte styla:', layer.id);
- }
- }
+  } catch (e) {
+        console.log('Kunde inte styla:', layer.id);
+      }
+    });
+  }
 
  if (navigator.geolocation) {
      navigator.geolocation.getCurrentPosition(
