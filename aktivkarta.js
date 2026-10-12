@@ -4,14 +4,17 @@ const map = new maplibregl.Map({
  center: [17.3147, 62.3898],
  zoom: 14
  });
-
+const fallbackCenter = [17.3147, 62.3898];
  map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
  map.on('error', (e) => console.error('Kartfel:', e.error));
 
- map.on('load', () => {
- for (const layer of map.getStyle().layers) {
- const id = layer.id.toLowerCase();
+map.on('load', () => {
+  if (!navigator.geolocation) {
+    console.warn('Geolocation stöds inte i denna webbläsare');
+    map.flyTo({ center: fallbackCenter, zoom: 12 });
+    return;
+  }
 
  try {
  if (layer.type === 'line' &&
@@ -43,7 +46,7 @@ const map = new maplibregl.Map({
          (position) => {
              const userLat = position.coords.latitude;
              const userLng = position.coords.longitude;
-
+            console.log('Geolocation OK:', { userLng, userLat });
              map.flyTo({
                  center: [userLng, userLat],
                  zoom: 14
@@ -52,16 +55,18 @@ const map = new maplibregl.Map({
              addUserMarker(userLng, userLat);
          },
          (error) => {
-    console.error('Kunde inte hämta plats:', error.message);
-    map.flyTo({
-        center: [17.3147, 62.3898],
-        zoom: 14
-    });
-},
+      console.warn('Geolocation misslyckades:', error.code, error.message);
+
+      // Endast om platsen faktiskt inte går att hämta
+      map.flyTo({
+        center: fallbackCenter,
+        zoom: 12
+      });
+    },
          {
-            enableHighAccuracy: false,
+            enableHighAccuracy: true,
             timeout: 10000,
-            maximumAge: 60000
+            maximumAge: 0
         }
      );
  } else {
