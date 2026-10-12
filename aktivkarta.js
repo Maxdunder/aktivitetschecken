@@ -15,63 +15,63 @@ map.on('load', () => {
   if (style.layers) {
     style.layers.forEach(layer => {
       const id = layer.id;
- try {
- if (layer.type === 'line' &&
- (id.includes('road') || id.includes('street') || id.includes('highway'))) {
- map.setPaintProperty(layer.id, 'line-color', '#d8dde0');
- map.setPaintProperty(layer.id, 'line-opacity', 0.75);
- }
- if (layer.type === 'fill' &&
- (id.includes('park') || id.includes('landuse') || id.includes('green'))) {
- map.setPaintProperty(layer.id, 'fill-color', '#edf4ef');
- map.setPaintProperty(layer.id, 'fill-opacity', 0.8);
- }
- if (layer.type === 'fill' &&
- (id.includes('water') || id.includes('ocean') || id.includes('lake'))) {
- map.setPaintProperty(layer.id, 'fill-color', '#edf7f8');
- map.setPaintProperty(layer.id, 'fill-opacity', 0.9);
- }
- if (layer.type === 'fill' && id.includes('building')) {
- map.setPaintProperty(layer.id, 'fill-color', '#f8f8f6');
- map.setPaintProperty(layer.id, 'fill-opacity', 0.85);
- }
-  } catch (e) {
-        console.log('Kunde inte styla:', layer.id);
-      }
-    });
+  try {
+  if (layer.type === 'line' &&
+  (id.includes('road') || id.includes('street') || id.includes('highway'))) {
+  map.setPaintProperty(layer.id, 'line-color', '#d8dde0');
+  map.setPaintProperty(layer.id, 'line-opacity', 0.75);
   }
+  if (layer.type === 'fill' &&
+  (id.includes('park') || id.includes('landuse') || id.includes('green'))) {
+  map.setPaintProperty(layer.id, 'fill-color', '#edf4ef');
+  map.setPaintProperty(layer.id, 'fill-opacity', 0.8);
+  }
+  if (layer.type === 'fill' &&
+  (id.includes('water') || id.includes('ocean') || id.includes('lake'))) {
+  map.setPaintProperty(layer.id, 'fill-color', '#edf7f8');
+  map.setPaintProperty(layer.id, 'fill-opacity', 0.9);
+  }
+  if (layer.type === 'fill' && id.includes('building')) {
+  map.setPaintProperty(layer.id, 'fill-color', '#f8f8f6');
+  map.setPaintProperty(layer.id, 'fill-opacity', 0.85);
+  }
+   } catch (e) {
+         console.log('Kunde inte styla:', layer.id);
+       }
+     });
+   }
 
- if (navigator.geolocation) {
-     navigator.geolocation.getCurrentPosition(
-         (position) => {
-             const userLat = position.coords.latitude;
-             const userLng = position.coords.longitude;
-            console.log('Geolocation OK:', { userLng, userLat });
-             map.flyTo({
-                 center: [userLng, userLat],
-                 zoom: 14
-             });
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+          (position) => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+             console.log('Geolocation OK:', { userLng, userLat });
+              map.flyTo({
+                  center: [userLng, userLat],
+                  zoom: 14
+              });
 
-             addUserMarker(userLng, userLat);
-         },
-         (error) => {
-      console.warn('Geolocation misslyckades:', error.code, error.message);
+              addUserMarker(userLng, userLat);
+          },
+          (error) => {
+       console.warn('Geolocation misslyckades:', error.code, error.message);
 
-      // Endast om platsen faktiskt inte går att hämta
-      map.flyTo({
-        center: fallbackCenter,
-        zoom: 12
-      });
-    },
-         {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
-        }
-     );
- } else {
-     console.error('Geolocation stöds inte i denna webbläsare');
- }
+       // Endast om platsen faktiskt inte går att hämta
+       map.flyTo({
+         center: fallbackCenter,
+         zoom: 12
+       });
+     },
+          {
+             enableHighAccuracy: true,
+             timeout: 10000,
+             maximumAge: 0
+         }
+      );
+  } else {
+      console.error('Geolocation stöds inte i denna webbläsare');
+  }
  });
 
  function addMarker(longitude, latitude, title, description) {
