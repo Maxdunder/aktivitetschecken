@@ -70,7 +70,14 @@ body {
     overflow: hidden;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
 }
-
+.user-marker {
+  width: 18px;
+  height: 18px;
+  background: #ff3b30;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.25);
+}
 .location-marker {
     display: grid;
     width: 42px;
