@@ -6,10 +6,10 @@
     <title>Minimalistisk karta</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Aktivitets Checken</title>
-    <link rel="stylesheet" href="../static/indexstyle.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
     <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-    <script src="../static/aktivkarta.js" defer></script>
+    <script src="aktivkarta.js" defer></script>
 </head>
 
 <body>
@@ -17,14 +17,27 @@
         <div class="sidetitle">
             <h2>Aktivitets Checken</h2>
         </div>
-            <div class="aktivbuttoncont">
-                <a class="aktivbutton" href="mat.html" target="_blank">
-                    bb
-                </a>
-            </div>
+        <div class="aktivbuttoncont">
+            <a class="aktivbutton active" href="gg.html" target="_blank">
+                Aktivitets Checken
+            </a>
+            <a class="alkbutton" href="gg.html" target="_blank">
+                Alkohol finder
+            </a>
+            <a class="matbutton" href="gg.html" target="_blank">
+                Mat klippet
+            </a>
         </div>
+    </div>
     <div class="search">
-        oo
+        <form id="searchform">
+            <div class="filtercont">
+                <button id="filter" type="button" aria-expanded="false">filtrera</button>
+                <div id="filterpanel" class="filterpanel" hidden></div>
+            </div>
+            <input type="search" id="searchinput" class="searchinput" placeholder="Sök aktivitet..." aria-label="Sök">
+            <button type="submit">Sök</button>
+        </form>
     </div>
     <div class="map-wrapper">
         <div class="map-inner">
