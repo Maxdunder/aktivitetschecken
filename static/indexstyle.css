@@ -17,14 +17,18 @@ body {
 }
 
 .header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* left side | buttons | right side */
+    align-items: center;
+    gap: 10px;
     flex: 0 0 80px;
     width: 100%;
+    padding: 0 10px;
     background-color: floralwhite;
 }
 
 .sidetitle {
-    padding-top: 5px;
-    padding-left: 10px;
+    white-space: nowrap;
     color: #333333;
     font-size: 20px;
     font-weight: bold;
@@ -32,9 +36,11 @@ body {
 
 .sidetitle h2 {
     margin: 0;
+    font-size: clamp(22px, 3vw, 30px); /* min, scales with window width, max */
 }
 
 .search {
+    display: flex;
     flex: 0 0 40px;
     width: calc(100% - 24px);
     height: 40px;
@@ -256,22 +262,122 @@ body {
     background-color: #125537;
 }
 .aktivbuttoncont {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    display: flex;
+    gap: 10px; /* space between the buttons */
+    align-self: start; /* don't auto-center vertically... */
+    margin-top: -8px; /* ...move the buttons down manually instead */
 }
 
-.aktivbutton {
-    display: inline-block;
-    padding: 10px 16px;
+/* shared look for all three buttons */
+.aktivbutton,
+.alkbutton,
+.matbutton {
+    display: flex;
+    min-width: clamp(100px, 15vw, 220px); /* min, scales with window width, max */
+    height: clamp(40px, 6vw, 60px);
+    justify-content: center; /* text centered horizontally */
+    align-items: flex-start; /* text starts at the top... */
+    padding-top: clamp(12px, 2.3vw, 23px); /* ...then push it down manually */
+    padding-left: 12px; /* the button grows if the text is too long */
+    padding-right: 12px;
+    white-space: nowrap; /* keep the text on one line */
     color: #ffffff;
-    background-color: #176b45;
     border-radius: 8px;
     text-decoration: none;
     cursor: pointer;
     font-weight: bold;
+    font-size: clamp(12px, 1.6vw, 20px);
 }
 
+.aktivbutton {
+    background-color: #0026ff;
+}
+.alkbutton {
+    background-color: #176b45;
+}
+.matbutton {
+    background-color: #ff3b30;
+}
 .aktivbutton:hover {
+    background-color: #0019cc;
+}
+.alkbutton:hover {
     background-color: #125537;
+}
+.matbutton:hover {
+    background-color: #b8001f;
+}
+
+/* the button for the page you're on */
+.aktivbutton.active,
+.alkbutton.active,
+.matbutton.active {
+    padding-top: 30px; 
+    height: 75px;
+    font-size: 22px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* small windows: title on top, buttons underneath */
+@media (max-width: 768px) {
+    .header {
+        flex: 0 0 auto;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 8px;
+        height: 150px;
+    }
+
+    .aktivbutton, .alkbutton, .matbutton {
+        width: 150px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .aktivbuttoncont {
+        margin-top: 0; /* stacked layout uses normal spacing */
+    }
+}
+
+/* search bar: filter button, search field and Sök button on one row */
+#searchform {
+    display: flex;
+    align-items: center; /* line everything up vertically */
+    gap: 8px;
+    width: 100%;
+    padding: 0 8px;
+}
+
+.searchinput {
+    height: 30px;
+    width: 320px;
+}
+
+/* filter dropdown */
+.filtercont {
+    position: relative; /* the panel is placed under the button */
+}
+
+.filterpanel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000; /* above the map */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+}
+
+.filterpanel[hidden] {
+    display: none; /* display: flex above would otherwise override hidden */
+}
+
+.filteroption {
+    cursor: pointer;
 }
