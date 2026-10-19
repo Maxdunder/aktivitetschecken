@@ -128,6 +128,9 @@ function addUserMarker(longitude, latitude) {
  .addTo(map);
  }
 
+ // Every activity marker on the map, used by the search.
+ const activityMarkers = [];
+
  function addActivityMarker(activity) {
     const markerElement = document.createElement('div');
     markerElement.className = `location-marker ${getCategoryClass(
@@ -193,13 +196,16 @@ function addUserMarker(longitude, latitude) {
         maxWidth: '320px'
     }).setDOMContent(popupContent);
 
-    new maplibregl.Marker({
+    const marker = new maplibregl.Marker({
         element: markerElement,
         anchor: 'bottom'
     })
         .setLngLat([activity.longitude, activity.latitude])
         .setPopup(popup)
         .addTo(map);
+
+    // Save the marker so the search can show/hide it.
+    activityMarkers.push({ activity, marker });
 }
 
 function getCategoryClass(category) {
@@ -237,4 +243,80 @@ addActivityMarker({
     location: 'Kulturhuset',
     image: 'images/image1.jpg',
     markerImage: 'images/kultur.png'
+});
+
+// Categories the user has unchecked in the filter panel.
+const hiddenCategories = new Set();
+
+const searchInput = document.getElementById("searchinput");
+const filterButton = document.getElementById("filter");
+const filterPanel = document.getElementById("filterpanel");
+
+// Show a marker only if its title contains the search word
+// AND its category is checked in the filter panel.
+function applyFilters() {
+    const search = searchInput.value.trim().toLowerCase();
+
+    activityMarkers.forEach(({ activity, marker }) => {
+        const matchesSearch = activity.title.toLowerCase().includes(search);
+        const isChecked = !hiddenCategories.has(activity.category);
+        const visible = matchesSearch && isChecked;
+
+        marker.getElement().style.display = visible ? '' : 'none';
+
+        // Close the popup if its marker gets hidden.
+        if (!visible && marker.getPopup().isOpen()) {
+            marker.togglePopup();
+        }
+    });
+}
+
+// Build one checkbox per category that exists on the map.
+const categories = [...new Set(activityMarkers.map(({ activity }) => activity.category))];
+
+categories.forEach((category) => {
+    const label = document.createElement('label');
+    label.className = 'filteroption';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = true;
+
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            hiddenCategories.delete(category);
+        } else {
+            hiddenCategories.add(category);
+        }
+        applyFilters();
+    });
+
+    label.append(checkbox, ` ${category}`);
+    filterPanel.appendChild(label);
+});
+
+// Open/close the filter panel.
+filterButton.addEventListener("click", function () {
+    filterPanel.hidden = !filterPanel.hidden;
+    filterButton.setAttribute("aria-expanded", String(!filterPanel.hidden));
+});
+
+// Close the panel when clicking somewhere else.
+document.addEventListener("click", function (e) {
+    if (!e.target.closest(".filtercont")) {
+        filterPanel.hidden = true;
+        filterButton.setAttribute("aria-expanded", "false");
+    }
+});
+
+document.getElementById("searchform").addEventListener("submit", function (e) {
+    e.preventDefault(); // stop the page from reloading
+    applyFilters();
+});
+
+// Only search on Enter/Sök, but show everything again when the field is cleared.
+searchInput.addEventListener("input", function () {
+    if (searchInput.value.trim() === "") {
+        applyFilters();
+    }
 });
