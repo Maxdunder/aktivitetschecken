@@ -15,7 +15,7 @@
 <body>
     <div class="header">
         <div class="sidetitle">
-            <h2>Aktivitets Checken</h2>
+            <h2>website name</h2>
         </div>
         <div class="aktivbuttoncont">
             <a class="aktivbutton active" href="gg.html" target="_blank">
@@ -32,16 +32,30 @@
     <div class="search">
         <form id="searchform">
             <div class="filtercont">
-                <button id="filter" type="button" aria-expanded="false">filtrera</button>
+                <button id="filter" type="button" aria-expanded="false">Filtrera</button>
                 <div id="filterpanel" class="filterpanel" hidden></div>
             </div>
             <input type="search" id="searchinput" class="searchinput" placeholder="Sök aktivitet..." aria-label="Sök">
-            <button type="submit">Sök</button>
+            <button id="searchbut" type="submit">Sök</button>
         </form>
     </div>
-    <div class="map-wrapper">
-        <div class="map-inner">
-            <div id="map"></div>
+   <div class="mapshit">
+        <div class="map-wrapper">
+            <div class="map-inner">
+                <div id="map"></div>
+            </div>
+        </div>
+        <div class="activitytab">
+            <div class="bartitle">Aktivitets flöde</div>
+            <div class="activitylist" id="activitylist">
+                <div class="activitybox" id="activity1">
+                    <div class="boxtitle"></div>
+                    <div class="boxcategory"></div>
+                    <div class="boxdescription"></div>
+                    <div class="boxdate"></div>
+                    <div class="boxtime"></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
