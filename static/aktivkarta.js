@@ -1,13 +1,29 @@
 const map = new maplibregl.Map({
- container: 'map',
- style: 'https://tiles.openfreemap.org/styles/liberty',
- center: [17.3147, 62.3898],
- zoom: 14
- });
-const fallbackCenter = [17.3147, 62.3898];
- map.addControl(new maplibregl.NavigationControl(), 'top-right');
+    container: 'map',
+    style: 'https://tiles.openfreemap.org/styles/liberty',
+    center: [17.3147, 62.3898],
+    zoom: 14,
+    attributionControl: false
+});
 
- map.on('error', (e) => console.error('Kartfel:', e.error));
+const fallbackCenter = [17.3147, 62.3898];
+
+let userLocation = null;
+let userMarker = null;
+map.addControl(
+    new maplibregl.AttributionControl({
+        compact: true,
+        customAttribution:
+            '© OpenFreeMap · © OpenStreetMap contributors'
+    }),
+    'bottom-right'
+);
+map.addControl(
+    new maplibregl.NavigationControl(),
+    'top-right'
+);
+
+map.on('error', (e) => console.error('Kartfel:', e.error));
 
 map.on('load', () => {
   // Style the map layers
@@ -116,22 +132,28 @@ map.on('load', () => {
 }
 
 function addUserMarker(longitude, latitude) {
- const element = document.createElement('div');
- element.className = 'user-marker';
+    if (userMarker) {
+        userMarker.setLngLat([longitude, latitude]);
+        return;
+    }
 
- const popup = new maplibregl.Popup({ offset: 18 })
- .setHTML('<strong>Din plats</strong>');
+    const element = document.createElement('div');
+    element.className = 'user-marker';
 
- new maplibregl.Marker({ element })
- .setLngLat([longitude, latitude])
- .setPopup(popup)
- .addTo(map);
+    const popup = new maplibregl.Popup({ offset: 18 })
+        .setHTML('<strong>Din plats</strong>');
+
+    userMarker = new maplibregl.Marker({ element })
+        .setLngLat([longitude, latitude])
+        .setPopup(popup)
+        .addTo(map);
  }
 
  // Every activity marker on the map, used by the search.
  const activityMarkers = [];
 
  function addActivityMarker(activity) {
+       displayActivity(activity);
     const markerElement = document.createElement('div');
     markerElement.className = `location-marker ${getCategoryClass(
         activity.category
@@ -207,7 +229,16 @@ function addUserMarker(longitude, latitude) {
     // Save the marker so the search can show/hide it.
     activityMarkers.push({ activity, marker });
 }
+function displayActivity(activity) {
+    const activityBox = document.querySelector('.activitybox');
 
+    activityBox.querySelector('.boxtitle').textContent =  activity.title;
+    activityBox.querySelector('.boxcategory').textContent = "Typ av aktivitet: " + activity.category;
+    activityBox.querySelector('.boxdescription').textContent =
+        activity.description;
+    activityBox.querySelector('.boxdate').textContent =  "Datum: " + activity.date;
+    activityBox.querySelector('.boxtime').textContent = "Tid: "+ activity.time;
+}
 function getCategoryClass(category) {
     const categoryClasses = {
         Sport: 'marker-sport',
@@ -320,3 +351,86 @@ searchInput.addEventListener("input", function () {
         applyFilters();
     }
 });
+
+function updateUserLocation(position) {
+    const userLat = position.coords.latitude;
+    const userLng = position.coords.longitude;
+
+    userLocation = {
+        latitude: userLat,
+        longitude: userLng
+    };
+
+    map.flyTo({
+        center: [userLng, userLat],
+        zoom: 14
+    });
+
+    addUserMarker(userLng, userLat);
+}
+
+function requestUserLocation() {
+    if (!navigator.geolocation) {
+        console.error('Geolocation stöds inte i denna webbläsare.');
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        updateUserLocation,
+        (error) => {
+            console.error('Kunde inte hämta plats:', error.message);
+        },
+        {
+            enableHighAccuracy: false,
+            timeout: 10000,
+            maximumAge: 60000
+        }
+    );
+}
+
+requestUserLocation();
+
+class RecenterControl {
+    onAdd(map) {
+        this.map = map;
+
+        this.container = document.createElement('div');
+        this.container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+
+        this.button = document.createElement('button');
+        this.button.type = 'button';
+        this.button.className = 'recenter-control-button';
+        this.button.title = 'Center on my location';
+        this.button.setAttribute('aria-label', 'Center on my location');
+        this.button.innerHTML = '<img src="images/location_icon.png">';
+
+        this.button.addEventListener('click', () => {
+            if (userLocation) {
+                map.flyTo({
+                    center: [
+                        userLocation.longitude,
+                        userLocation.latitude
+                    ],
+                    zoom: 14,
+                    essential: true
+                });
+            } else {
+                requestUserLocation();
+            }
+        });
+
+        this.container.appendChild(this.button);
+
+        return this.container;
+    }
+
+    onRemove() {
+        this.container.remove();
+        this.map = undefined;
+    }
+}
+
+map.addControl(
+    new RecenterControl(),
+    'top-right'
+);
