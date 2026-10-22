@@ -8,8 +8,8 @@
         "date": "Lördag 12 oktober",
         "time": "14:00–16:00",
         "location": "Hedbergska planen",
-        "image": "./images/fotboll.jpg",
-        "markerImage": "./images/sport.png"
+       "image": "/aktivitetschecken/images/fotboll.jpg",
+        "markerImage": "/aktivitetschecken/images/sport.png"
     },
     {
         "longitude": 17.30373085233,
