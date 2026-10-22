@@ -250,31 +250,28 @@ function getCategoryClass(category) {
     return categoryClasses[category] || 'marker-default';
 }
 
-addActivityMarker({
-    longitude: 17.311523909612948,
-    latitude: 62.39005200377482,
-    title: 'Fotboll för ungdomar',
-    category: 'Sport',
-    description: 'Kom och spela fotboll tillsammans med andra ungdomar.',
-    date: 'Lördag 12 oktober',
-    time: '14:00–16:00',
-    location: 'Hedbergska planen',
-    image: 'images/fotboll.jpg',
-      markerImage: 'images/sport.png'
-});
 
-addActivityMarker({
-    longitude: 17.30373085233,
-    latitude: 62.38855180836299,
-    title: 'Målarkväll',
-    category: 'Kultur',
-    description: 'En avslappnad kväll där alla får prova att måla.',
-    date: 'Söndag 13 oktober',
-    time: '18:00–20:00',
-    location: 'Kulturhuset',
-    image: 'images/image1.jpg',
-    markerImage: 'images/kultur.png'
-});
+//besök api backend för att hämta aktiviteter och lägga till dem på kartan
+async function loadActivities() {
+    try {
+        const response = await fetch('./activities.json');
+
+        if (!response.ok) {
+            throw new Error(`Could not load activities: ${response.status}`);
+        }
+
+        const activities = await response.json();
+
+        activities.forEach((activity) => {
+            addActivityMarker(activity);
+        });
+    } catch (error) {
+        console.error('Could not load activities:', error);
+    }
+}
+
+loadActivities();
+//loppa igen alla aktiviteter och lägg till dem på kartan
 
 // Categories the user has unchecked in the filter panel.
 const hiddenCategories = new Set();
