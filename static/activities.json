@@ -8,8 +8,8 @@
         "date": "Lördag 12 oktober",
         "time": "14:00–16:00",
         "location": "Hedbergska planen",
-        "image": "images/fotboll.jpg",
-        "markerImage": "images/sport.png"
+        "image": "../images/fotboll.jpg",
+        "markerImage": "../images/sport.png"
     },
     {
         "longitude": 17.30373085233,
@@ -20,7 +20,7 @@
         "date": "Söndag 13 oktober",
         "time": "18:00–20:00",
         "location": "Kulturhuset",
-        "image": "images/image1.jpg",
-        "markerImage": "images/kultur.png"
+        "image": "../images/image1.jpg",
+        "markerImage": "../images/kultur.png"
     }
 ]
