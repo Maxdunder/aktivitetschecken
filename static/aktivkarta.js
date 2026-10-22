@@ -269,8 +269,6 @@ async function loadActivities() {
         console.error('Could not load activities:', error);
     }
 }
-
-loadActivities();
 loadActivities();
 //loppa igen alla aktiviteter och lägg till dem på kartan
 
