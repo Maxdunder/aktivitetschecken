@@ -12,16 +12,13 @@
         </header>
 
         <div class="Login-container">
-            <a class="Login-button" href="Registrera.html">Registrera</a>
+            <a class="Login-button" href="{{ url_for('registrera') }}">Registrera</a>
         </div>
 
         <div class="registrera-container">
-            <form action="login.php" method="post">
+            <form action="{{ url_for('login') }}" method="post">
                 <label for="username">Användarnamn:</label>
                 <input type="text" id="username" name="username" required>
-
-                <label for="email">E-post:</label>
-                <input type="email" id="email" name="email" required>
 
                 <label for="password">Lösenord:</label>
                 <input type="password" id="password" name="password" required>

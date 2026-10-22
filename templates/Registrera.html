@@ -11,10 +11,10 @@
             <h1>Registrera</h1>
         </header>
         <div class="Login-container">
-            <a class="Login-button" href="Login.html">Login</a>
+            <a class="Login-button" href="{{ url_for('login') }}">Login</a>
         </div>
         <div class="registrera-container">
-            <form action="registrera.php" method="post">
+            <form action="{{ url_for('registrera') }}" method="post">
                 <label for="username">Användarnamn:</label>
                 <input type="text" id="username" name="username" required>
 
