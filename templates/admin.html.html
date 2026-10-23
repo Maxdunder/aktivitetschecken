@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>EventHub</h2>
+        <p>Admin Panel</p>
+
+        <nav>
+            <a href="#">⌂ Översikt</a>
+            <a href="#" class="active">👤 Användare</a>
+            <a href="#">▣ Aktiviteter</a>
+            <a href="#">🍴 Mat & dryck</a>
+            <a href="#">🗺 Karta</a>
+            <a href="#">▥ Rapporter</a>
+            <a href="#">⚙ Inställningar</a>
+        </nav>
+
+        <a href="#" class="logout">⇥ Logga ut</a>
+    </aside>
+
+    <main>
+        <header>
+            <span></span>
+            <p>Admin　⌄</p>
+        </header>
+
+        <h1>Användare</h1>
+        <p>Hantera och se alla användare i systemet.</p>
+
+        <div class="stats">
+            <div class="card">
+                <p>Totalt antal användare</p>
+                <h2>24</h2>
+                <span>↑ +3 denna vecka</span>
+            </div>
+
+            <div class="card">
+                <p>Aktiva användare</p>
+                <h2>20</h2>
+                <span>↑ +2 denna vecka</span>
+            </div>
+
+            <div class="card">
+                <p>Inaktiva användare</p>
+                <h2>4</h2>
+                <span>↑ +1 denna vecka</span>
+            </div>
+        </div>
+
+        <section class="users">
+            <div class="toolbar">
+                <input type="text" placeholder="⌕ Sök användare...">
+                <select>
+                    <option>Alla statusar</option>
+                    <option>Aktiv</option>
+                    <option>Inaktiv</option>
+                </select>
+                <button>+ Lägg till användare</button>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Namn</th>
+                    <th>E-post</th>
+                    <th>Telefonnummer</th>
+                    <th>Skapad</th>
+                    <th>Status</th>
+                    <th>Åtgärder</th>
+                </tr>
+
+                <tr>
+                    <td> Oskar Lindgren</td>
+                    <td>oskar@gmail.com</td>
+                    <td>0701234567</td>
+                    <td>2026-10-12</td>
+                    <td><span class="active-status">Aktiv</span></td>
+                    <td>　🗑</td>
+                </tr>
+
+                <tr>
+                    <td> Emma Andersson</td>
+                    <td>emma@live.se</td>
+                    <td>0729876543</td>
+                    <td>2026-10-11</td>
+                    <td><span class="active-status">Aktiv</span></td>
+                    <td>　🗑</td>
+                </tr>
+
+                <tr>
+                    <td> Lukas Berg</td>
+                    <td>lukas@outlook.com</td>
+                    <td>0734567890</td>
+                    <td>2026-10-10</td>
+                    <td><span class="active-status">Aktiv</span></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>👤 Sara Nilsson</td>
+                    <td>sara@gmail.com</td>
+                    <td>0765432109</td>
+                    <td>2026-10-09</td>
+                    <td><span class="active-status">Aktiv</span></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>👤 Ali Hassan</td>
+                    <td>ali@icloud.com</td>
+                    <td>0709988776</td>
+                    <td>2026-10-08</td>
+                    <td><span class="inactive-status">Inaktiv</span></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>👤 Felicia Johansson</td>
+                    <td>felicia@live.se</td>
+                    <td>0731122334</td>
+                    <td>2026-10-07</td>
+                    <td><span class="active-status">Aktiv</span></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>👤 Noah Karlsson</td>
+                    <td>noah@gmail.com</td>
+                    <td>0723344556</td>
+                    <td>2026-10-06</td>
+                    <td><span class="active-status">Aktiv</span></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>👤 Maja Svensson</td>
+                    <td>maja@outlook.com</td>
+                    <td>0705566778</td>
+                    <td>2026-10-05</td>
+                    <td><span class="inactive-status">Inaktiv</span></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <footer>
+                Visar 1–8 av 24 användare
+                <span>‹　<strong>1</strong>　2　3　›</span>
+            </footer>
+        </section>
+    </main>
+
+</body>
+</html>
