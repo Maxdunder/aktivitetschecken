@@ -39,24 +39,19 @@
             <button id="searchbut" type="submit">Sök</button>
         </form>
     </div>
-   <div class="mapshit">
+    <div class="mapshit">
         <div class="map-wrapper">
             <div class="map-inner">
                 <div id="map"></div>
             </div>
         </div>
-        <div class="activitytab">
-            <div class="bartitle">Aktivitets flöde</div>
-            <div class="activitylist" id="activitylist">
-                <div class="activitybox" id="activity1">
-                    <div class="boxtitle"></div>
-                    <div class="boxcategory"></div>
-                    <div class="boxdescription"></div>
-                    <div class="boxdate"></div>
-                    <div class="boxtime"></div>
-                </div>
+        <section class="activitytab" aria-label="Aktivitetsflöde">
+            <div>
+                <h2 class="feed-title">Aktiviteter nära dig</h2>
+                <p class="feed-sub" id="feed-count"></p>
             </div>
-        </div>
+            <div id="activity-list" class="activity-list"></div>
+        </section>
     </div>
 </body>
 </html>
