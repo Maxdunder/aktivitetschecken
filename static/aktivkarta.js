@@ -1,3 +1,4 @@
+const activitiesUrl = new URL('./activities.json', document.currentScript.src);
 const map = new maplibregl.Map({
     container: 'map',
     style: 'https://tiles.openfreemap.org/styles/liberty',
@@ -384,7 +385,7 @@ function getCategoryClass(category) {
 //besök api backend för att hämta aktiviteter och lägga till dem på kartan
 async function loadActivities() {
     try {
-        const response = await fetch('../static/activities.json');
+        const response = await fetch('activities.json');
 
         if (!response.ok) {
             throw new Error(`Could not load activities: ${response.status}`);
