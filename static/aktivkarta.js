@@ -1,7 +1,7 @@
 const activitiesJsonUrl = new URL(
     'activities.json',
     document.currentScript.src
-);
+); 
 const map = new maplibregl.Map({
     container: 'map',
     style: 'https://tiles.openfreemap.org/styles/liberty',
