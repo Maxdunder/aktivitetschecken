@@ -389,7 +389,6 @@ function getCategoryClass(category) {
 async function loadActivities() {
     try {
         const response = await fetch(activitiesJsonUrl);
-
         if (!response.ok) {
             throw new Error(`Could not load activities: ${response.status}`);
         }
