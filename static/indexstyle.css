@@ -1,7 +1,7 @@
 * {
     box-sizing: border-box;
 }
- 
+
 html,
 body {
     width: 100%;
@@ -96,6 +96,8 @@ body {
     background-color: #ffffff;
     border-radius: 12px;
     padding: 14px;
+    overflow-y: auto;
+    padding-right: 6px;
 }
 .bartitle {
     text-align: center;
@@ -105,31 +107,219 @@ body {
     font-weight: bold;
     margin-bottom: 12px;
 }
-.activitybox {
-    width: 100%;
-    height: 130px;
-    padding: 8px;
-    background-color: beige;
-    border-radius: 8px;
+/* ---------- Färger ---------- */
+:root {
+    --primary: #2563EB;
+    --primary-dark: #1E3A8A;
+    --primary-light: #EAF1FF;
+    --bg: #F7F9FC;
+    --text: #1B2433;
+    --muted: #5B6678;
+    --border: #DDE3EC;
 }
-.boxtitle {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 6px;
-    text-align: center;
-}
-.boxcategory {
-    font-size: 15px;
-    margin-bottom: 4px;
-}
-.boxdescription {
-    font-size: 14px;
-    margin-bottom: 4px;
-}
-.boxdate {
 
-    margin-bottom: 4px;
+/* ---------- Flödet bredvid kartan ---------- */
+.activitytab {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+    text-align: left;
 }
+
+.feed-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    text-align: left;
+}
+
+.feed-sub {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ---------- Kortet ---------- */
+.card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.08);
+    text-align: left;
+}
+
+    .card.is-selected {
+        padding: 15px;
+        border: 2px solid var(--primary);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14), 0 6px 18px rgba(30, 58, 138, 0.12);
+    }
+
+.card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-distance {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.card-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+    .card-meta li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .card-meta svg,
+    .card-going svg {
+        flex: none;
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: var(--muted);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+.card-desc {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--text);
+}
+
+.card-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-going {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.card-btn {
+    min-height: 44px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+    .card-btn:hover {
+        background: var(--primary-dark);
+    }
+
+/* ---------- Kategori-chips ---------- */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+    .chip::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+.chip-sport {
+    background: #C6E8D5;
+    color: #176b45;
+}
+
+    .chip-sport::before {
+        background: #176b45;
+    }
+
+.chip-kultur {
+    background: #F1EBFF;
+    color: #5B21B6;
+}
+
+    .chip-kultur::before {
+        background: #7C3AED;
+    }
+
+.chip-traffar {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+    .chip-traffar::before {
+        background: #D97706;
+    }
+
+.chip-natur {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+    .chip-natur::before {
+        background: #16A34A;
+    }
+
+.chip-musik {
+    background: #FCE7F3;
+    color: #9D174D;
+}
+
+    .chip-musik::before {
+        background: #DB2777;
+    }
 .maplibregl-ctrl-group {
     border: none !important;
     border-radius: 12px !important;
@@ -183,7 +373,7 @@ body {
 }
 
 .marker-musik {
-    background-color: #dc842c;
+    background-color: #9D174D;
 }
 
 .marker-default {
