@@ -388,7 +388,7 @@ function getCategoryClass(category) {
 //besök api backend för att hämta aktiviteter och lägga till dem på kartan
 async function loadActivities() {
     try {
-        const response = await fetch(activitiesUrl);
+        const response = await fetch(activitiesJsonUrl);
 
         if (!response.ok) {
             throw new Error(`Could not load activities: ${response.status}`);
