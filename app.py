@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 app = Flask(__name__)
 app.secret_key = "fdfca33e2f84589b2e4a98275b56b0f4a60287e0164cfa405fc1b588808633c2"
@@ -8,8 +9,38 @@ app.secret_key = "fdfca33e2f84589b2e4a98275b56b0f4a60287e0164cfa405fc1b588808633
 DATABASE = "database.db"
 
 
+
 def get_db():
     return sqlite3.connect(DATABASE)
+
+def json_to_database():
+    with open("static/activities.json", "r", encoding="utf-8") as file:
+        activities = json.load(file)
+    conn = get_db()
+
+    for activity in activities:
+        conn.execute("""
+            INSERT INTO map
+            (latitude, longitude, title, category, description,
+             date, time, location, image_path, marker_image, user_id, activity_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            activity["latitude"],
+            activity["longitude"],
+            activity["title"],
+            activity["category"],
+            activity["description"],
+            activity["date"],
+            activity["time"],
+            activity["location"],
+            activity["image"],
+            activity["markerImage"],
+            "test",
+            "testid"
+        ))
+
+    conn.commit()
+    conn.close()
 
 @app.route("/")
 def index():
@@ -17,6 +48,8 @@ def index():
 
 @app.route("/registrera", methods=["GET", "POST"])
 def registrera():
+    if "username" in session:
+            return redirect(url_for("index"))
     if request.method == "POST":
         username = request.form["username"]
         email = request.form["email"]

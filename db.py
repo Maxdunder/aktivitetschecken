@@ -51,6 +51,15 @@ CREATE TABLE IF NOT EXISTS food_drinks (
   PRIMARY KEY (id),
   FOREIGN KEY (activity_id) REFERENCES activities(id)
 );
+
+ALTER TABLE map ADD COLUMN title TEXT;
+ALTER TABLE map ADD COLUMN category TEXT;
+ALTER TABLE map ADD COLUMN description TEXT;
+ALTER TABLE map ADD COLUMN date TEXT;
+ALTER TABLE map ADD COLUMN time TEXT;
+ALTER TABLE map ADD COLUMN location TEXT;
+ALTER TABLE map ADD COLUMN marker_image TEXT;
+
 """
 
 def get_db():
