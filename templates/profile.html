@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/static/profile.css">
+</head>
+<body>
+
+    <header>
+        <button>Edit Profile</button>
+        <button>Activities</button>
+
+        <h1>{{user['name']}}'s Profile</h1>
+
+        <img src="{{ user['profile_picture'] or 'https://www.magnific.com/free-photos-vectors/default-user' }}" alt="">
+    </header>
+
+    <section class="profile-settings">
+
+        <!-- Change username -->
+        <form method="POST">
+            <input type="hidden" name="action" value="username">
+        
+            <label>Change Username</label>
+            <input type="text" name="changeusername" required>
+        
+            <button type="submit">Confirm Username</button>
+        </form>
+
+        <!-- Change email -->
+        <form method="POST">
+            <input type="hidden" name="action" value="email">
+        
+            <label>Change Email</label>
+            <input type="email" name="changeemail" required>
+        
+            <button type="submit">Confirm Email</button>
+        </form>
+
+        <!-- Change password -->
+        <form method="POST">
+            <input type="hidden" name="action" value="password">
+        
+            <label>New Password</label>
+            <input type="password" name="changepassword" required>
+        
+            <label>Confirm New Password</label>
+            <input type="password" name="confirmpassword" required>
+        
+            <button type="submit">Confirm Password</button>
+        </form>
+
+        <!-- Change company -->
+        <form method="POST">
+            <input type="hidden" name="action" value="company">
+        
+            <label>Company Name</label>
+            <input type="text" name="companyname">
+        
+            <button type="submit">Confirm Company</button>
+        </form>
+
+        <!-- Change profile picture -->
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="picture">
+        
+            <label>Profile Picture</label>
+            <input type="file" name="profile_picture" accept="image/*" required>
+        
+            <button type="submit">Upload Picture</button>
+        </form>
+    
+    </section>
+    
+</body>
+</html>

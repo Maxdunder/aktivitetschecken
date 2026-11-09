@@ -11,7 +11,9 @@ DATABASE = "database.db"
 
 
 def get_db():
-    return sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 def json_to_database():
     with open("static/activities.json", "r", encoding="utf-8") as file:
@@ -72,7 +74,7 @@ def registrera():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if "username" in session:
+    if "user_id" in session:
         return redirect(url_for("index"))
     if request.method == "POST":
         username = request.form['username']
@@ -86,12 +88,32 @@ def login():
         conn.close()
 
         if user and check_password_hash(user[7], password):
-            session["username"] = username
+            session["user_id"] = user[0]
             return redirect(url_for("index"))
         else:
             return "Wrong username or password!"
-
+    
     return render_template("Login.html")
+
+def get_session_user():
+    if "user_id" not in session:
+        return None
+    conn = get_db()
+    user = conn.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (session["user_id"],)
+    ).fetchone()
+    conn.close()
+
+    return user
+
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
+    user = get_session_user()
+
+    print(user['profile_picture'])
+
+    return render_template("profile.html", user=user)
 
 
 if __name__ == "__main__":
