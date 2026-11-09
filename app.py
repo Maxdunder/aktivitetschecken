@@ -1,20 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
+import os
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "database.db")
+
 app = Flask(__name__)
-app.secret_key = "fdfca33e2f84589b2e4a98275b56b0f4a60287e0164cfa405fc1b588808633c2"
-
-DATABASE = "database.db"
-
+app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
 
 
 def get_db():
     return sqlite3.connect(DATABASE)
 
+
 def json_to_database():
-    with open("static/activities.json", "r", encoding="utf-8") as file:
+    with open(os.path.join(BASE_DIR, "static", "activities.json"), "r", encoding="utf-8") as file:
         activities = json.load(file)
     conn = get_db()
 
@@ -42,14 +44,21 @@ def json_to_database():
     conn.commit()
     conn.close()
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
+
+@app.route("/mat")
+def mat():
+    return render_template("mat.html")
+
+
 @app.route("/registrera", methods=["GET", "POST"])
 def registrera():
     if "username" in session:
-            return redirect(url_for("index"))
+        return redirect(url_for("index"))
     if request.method == "POST":
         username = request.form["username"]
         email = request.form["email"]
@@ -57,26 +66,25 @@ def registrera():
         password_hash = generate_password_hash(request.form["password"])
 
         conn = get_db()
-
         conn.execute(
             "INSERT INTO users (name, email, phone, password_hash) VALUES (?, ?, ?, ?)",
             (username, email, phone, password_hash)
         )
-
         conn.commit()
         conn.close()
 
-        
+        return redirect(url_for("login"))
 
     return render_template("Registrera.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if "username" in session:
         return redirect(url_for("index"))
     if request.method == "POST":
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form["username"]
+        password = request.form["password"]
 
         conn = get_db()
         user = conn.execute(
