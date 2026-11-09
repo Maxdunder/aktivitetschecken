@@ -29,17 +29,38 @@ body {
 }
 
 .sidetitle {
+    display: flex;
     white-space: nowrap;
     color: floralwhite;
     font-size: 20px;
     font-weight: bold;
+    justify-content: left;
+    align-items: center;
 }
 
 .sidetitle h2 {
     margin: 0;
     font-size: clamp(22px, 3vw, 30px); /* min, scales with window width, max */
 }
-
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 85px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+.title {
+    display: flex;
+    white-space: nowrap;
+    color: floralwhite;
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: right;
+    align-items: center;
+    margin-right: 20px;
+}
 .search {
     justify-content: center;
     align-items: center;
