@@ -3,15 +3,19 @@ import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
-
-@app.route("/images/<path:filename>")
-def images(filename):
-    return send_from_directory(os.path.join(BASE_DIR, "images"), filename)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE = os.path.join(BASE_DIR, "database.db")
+import uuid
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
+
+@app.route("/images/<path:filename>")
+def images(filename):
+    return send_from_directory(os.path.join(BASE_DIR, "profile_pictures"), filename)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "database.db")
+
+
 
 
 def get_db():
@@ -136,20 +140,20 @@ def profile():
             )
 
         if action == 'email':
-                    email = request.form["changeemail"]
+            email = request.form["changeemail"]
         
-                    conn.execute(
-                        "UPDATE users SET email = ? WHERE id = ?",
-                        (email, session["user_id"])
-                    )
+            conn.execute(
+                "UPDATE users SET email = ? WHERE id = ?",
+                (email, session["user_id"])
+            )
 
         if action == 'phone':
-                            phone = request.form["changephone"]
+            phone = request.form["changephone"]
                 
-                            conn.execute(
-                                "UPDATE users SET phone = ? WHERE id = ?",
-                                (phone, session["user_id"])
-                            )
+            conn.execute(
+                "UPDATE users SET phone = ? WHERE id = ?",
+                (phone, session["user_id"])
+            )
 
         if action == 'password':
             newPassword = request.form['changepassword']
@@ -162,12 +166,38 @@ def profile():
                 )
 
         if action == 'company':
-                            company = request.form["companyname"]
+            company = request.form["companyname"]
                 
-                            conn.execute(
-                                "UPDATE users SET company = ? WHERE id = ?",
-                                (company, session["user_id"])
-                            )
+            conn.execute(
+                "UPDATE users SET company = ? WHERE id = ?",
+                (company, session["user_id"])
+            )
+
+        if action == 'picture':
+            file = request.files["profile_picture"]
+
+            if file and file.filename:
+                allowed_extensions = {"png", "jpg", "jpeg", "gif", "webp"}
+                extension = file.filename.rsplit(".", 1)[-1].lower()
+
+                if extension not in allowed_extensions:
+                    conn.close
+                    return "Invalid image format!"
+
+                filename = secure_filename(str(uuid.uuid4()) + "." + extension)
+
+                upload_folder = os.path.join("static", "profile_pictures")
+                os.makedirs(upload_folder, exist_ok=True)
+
+                file.save(os.path.join(upload_folder, filename))
+
+                image_path = "static/profile_pictures/" + filename
+
+                conn.execute(
+                    "UPDATE users SET profile_picture = ? WHERE id = ?",
+                    (image_path, session['user_id'])
+                )
+
             
 
         conn.commit()
@@ -179,7 +209,7 @@ def profile():
     return render_template("profile.html", user=user)
 
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
     return redirect(url_for("index"))

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/static/profile.css">
 </head>
 <body>
-
+{% if user %}
     <header>
         <button>Edit Profile</button>
         <button>Activities</button>
@@ -83,6 +83,19 @@
         </form>
     
     </section>
+
+    <footer>
+
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+
+    </footer>
+
+    {% else %}
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('registrera') }}">Register</a>
+    {% endif %}
     
 </body>
 </html>
