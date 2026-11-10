@@ -15,13 +15,6 @@ def images(filename):
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, "database.db")
 
-
-
-
-@app.route("/images/<path:filename>")
-def images(filename):
-    return send_from_directory(os.path.join(BASE_DIR, "images"), filename)
-
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
