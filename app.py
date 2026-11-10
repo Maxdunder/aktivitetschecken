@@ -1,18 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
 
-@app.route("/images/<path:filename>")
-def images(filename):
-    return send_from_directory(os.path.join(BASE_DIR, "images"), filename)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, "database.db")
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
 
+
+@app.route("/images/<path:filename>")
+def images(filename):
+    return send_from_directory(os.path.join(BASE_DIR, "images"), filename)
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
