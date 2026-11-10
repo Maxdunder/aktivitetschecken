@@ -5,16 +5,29 @@ document.querySelectorAll(".section-header").forEach(btn => {
     btn.setAttribute("aria-expanded", String(!open));
   });
 });
- 
-// Open a settings panel when its sidebar link is clicked
-document.querySelectorAll('.sidebar a[href^="#"]').forEach(link => {
-  link.addEventListener("click", () => {
-    const panel = document.querySelector(link.getAttribute("href"));
-    const header = panel && panel.querySelector(".section-header");
-    if (header) header.setAttribute("aria-expanded", "true");
+
+// Tabs: clicking a sidebar link shows its panel and hides the others
+const tabLinks = document.querySelectorAll("[data-tab]");
+const panels = document.querySelectorAll(".tab-panel");
+
+function showTab(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  panels.forEach(p => { p.hidden = (p !== target); });
+  tabLinks.forEach(l => l.classList.toggle("active", l.dataset.tab === id));
+}
+
+tabLinks.forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    showTab(link.dataset.tab);
+    history.replaceState(null, "", "#" + link.dataset.tab);
   });
 });
- 
+
+// Open the tab named in the URL, e.g. /profile#tab-aktiviteter
+if (location.hash) showTab(location.hash.slice(1));
+
 // Collapse / expand the whole sidebar, and remember the choice
 const sidebar = document.getElementById("sidebar");
 try {
@@ -22,11 +35,10 @@ try {
     sidebar.classList.add("collapsed");
   }
 } catch (e) {}
- 
+
 document.getElementById("sidebarToggle").addEventListener("click", () => {
   const collapsed = sidebar.classList.toggle("collapsed");
   try {
     localStorage.setItem("sidebarCollapsed", collapsed ? "1" : "0");
   } catch (e) {}
 });
- 
