@@ -159,3 +159,35 @@
             display: none;
         }
 }
+
+/* Tabs: only the active panel is visible */
+.tab-panel[hidden] {
+    display: none !important;
+}
+
+.sidebar a.active {
+    background: #2563eb;
+    color: #fff;
+}
+
+/* Dina aktiviteter */
+.card {
+    padding: 16px;
+    border: 1px solid #e2e6ea;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.activity-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .activity-list li {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eef0f3;
+    }
