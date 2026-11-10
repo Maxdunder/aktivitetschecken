@@ -6,11 +6,14 @@
     <title>Profile</title>
     <link rel="stylesheet" href="../static/profile.css">
     <link rel="stylesheet" href="../static/menu.css">
+    <link rel="stylesheet" href="../static/indexstyle.css">
     <script src="../static/menu.js" defer></script>
 </head>
 <body>
     {% if user %}
+
     <div class="layout">
+
         <!-- Sidebar menu -->
         <aside class="sidebar" id="sidebar">
             <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">‹</button>
@@ -23,97 +26,121 @@
                 <ul class="section-items">
                     <li><a href="{{ url_for('index') }}"><span class="icon">🏠</span><span class="label">Activities</span></a></li>
                     <li><a href="{{ url_for('mat') }}"><span class="icon">🍽️</span><span class="label">Food</span></a></li>
-                    <li><a href="#account"><span class="icon">👤</span><span class="label">Account</span></a></li>
+                    <li><a href="#tab-account" data-tab="tab-account" class="active"><span class="icon">👤</span><span class="label">Account</span></a></li>
+                    <li><a href="#tab-aktiviteter" data-tab="tab-aktiviteter"><span class="icon">📅</span><span class="label">Dina aktiviteter</span></a></li>
                 </ul>
             </div>
         </aside>
+
         <!-- Main content -->
         <main class="content">
 
-            <!-- Everything below is inside one section called Account -->
-            <div class="menu-section account" id="account">
-                <button class="section-header" aria-expanded="true">
-                    <span class="label">Account</span>
-                    <span class="chevron">⌃</span>
-                </button>
+            <!-- Tab: Account -->
+            <div class="tab-panel active" id="tab-account">
+                <!-- Everything below is inside one section called Account -->
+                <div class="menu-section account" id="account">
+                    <button class="section-header" aria-expanded="true">
+                        <span class="label">Account</span>
+                        <span class="chevron">⌃</span>
+                    </button>
 
-                <div class="section-items tall">
+                    <div class="section-items tall">
 
-                    <header>
-                        <button>Edit Profile</button>
-                        <button>Activities</button>
+                        <header>
+                            <button>Edit Profile</button>
+                            <button>Activities</button>
 
-                        <h1>{{user['name']}}'s Profile</h1>
+                            <h1>{{user['name']}}'s Profile</h1>
 
-                        <img src="{{ user['profile_picture'] or 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' }}" alt="">
-                    </header>
+                            <img src="{{ user['profile_picture'] or 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' }}" alt="">
+                        </header>
 
-                    <section class="profile-settings">
+                        <section class="profile-settings">
 
-                        <!-- Change username -->
-                        <form method="POST">
-                            <input type="hidden" name="action" value="username">
+                            <!-- Change username -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="username">
 
-                            <label>Change Username</label>
-                            <input type="text" name="changeusername" placeholder="{{user['name']}}" required>
+                                <label>Change Username</label>
+                                <input type="text" name="changeusername" placeholder="{{user['name']}}" required>
 
-                            <button type="submit">Confirm Username</button>
-                        </form>
+                                <button type="submit">Confirm Username</button>
+                            </form>
 
-                        <!-- Change email -->
-                        <form method="POST">
-                            <input type="hidden" name="action" value="email">
+                            <!-- Change email -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="email">
 
-                            <label>Change Email</label>
-                            <input type="email" name="changeemail" placeholder="{{user['email']}}" required>
+                                <label>Change Email</label>
+                                <input type="email" name="changeemail" placeholder="{{user['email']}}" required>
 
-                            <button type="submit">Confirm Email</button>
-                        </form>
+                                <button type="submit">Confirm Email</button>
+                            </form>
 
-                        <!-- Change phone number -->
-                        <form method="POST">
-                            <input type="hidden" name="action" value="phone">
+                            <!-- Change phone number -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="phone">
 
-                            <label>Change Phone number</label>
-                            <input type="tel" name="changephone" placeholder="{{user['phone']}}" required>
+                                <label>Change Phone number</label>
+                                <input type="tel" name="changephone" placeholder="{{user['phone']}}" required>
 
-                            <button type="submit">Confirm Phone</button>
-                        </form>
+                                <button type="submit">Confirm Phone</button>
+                            </form>
 
-                        <!-- Change password -->
-                        <form method="POST">
-                            <input type="hidden" name="action" value="password">
+                            <!-- Change password -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="password">
 
-                            <label>New Password</label>
-                            <input type="password" name="changepassword" placeholder="Password123" required>
+                                <label>New Password</label>
+                                <input type="password" name="changepassword" placeholder="Password123" required>
 
-                            <label>Confirm New Password</label>
-                            <input type="password" name="confirmpassword" placeholder="Password123" required>
+                                <label>Confirm New Password</label>
+                                <input type="password" name="confirmpassword" placeholder="Password123" required>
 
-                            <button type="submit">Confirm Password</button>
-                        </form>
+                                <button type="submit">Confirm Password</button>
+                            </form>
 
-                        <!-- Change company -->
-                        <form method="POST">
-                            <input type="hidden" name="action" value="company">
+                            <!-- Change company -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="company">
 
-                            <label>Company Name</label>
-                            <input type="text" placeholder="{{user['company'] or 'Company name'}}" name="companyname">
+                                <label>Company Name</label>
+                                <input type="text" placeholder="{{user['company'] or 'Company name'}}" name="companyname">
 
-                            <button type="submit">Confirm Company</button>
-                        </form>
+                                <button type="submit">Confirm Company</button>
+                            </form>
 
-                        <!-- Change profile picture -->
-                        <form method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="action" value="picture">
+                            <!-- Change profile picture -->
+                            <form method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="action" value="picture">
 
-                            <label>Profile Picture</label>
-                            <input type="file" name="profile_picture" accept="image/*" required>
+                                <label>Profile Picture</label>
+                                <input type="file" name="profile_picture" accept="image/*" required>
 
-                            <button type="submit">Upload Picture</button>
-                        </form>
+                                <button type="submit">Upload Picture</button>
+                            </form>
 
-                    </section>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Dina aktiviteter -->
+            <div class="tab-panel" id="tab-aktiviteter" hidden>
+                <div class="card">
+                    <h2>Dina aktiviteter</h2>
+                    {% if activities %}
+                    <ul class="activity-list">
+                        {% for a in activities %}
+                        <li>
+                            <strong>{{ a['title'] }}</strong>
+                            <span>{{ a['date'] }} {{ a['time'] }} · {{ a['location'] }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Du har inga aktiviteter än.</p>
+                    {% endif %}
                 </div>
             </div>
 
