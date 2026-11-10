@@ -19,13 +19,13 @@
         </div>
 
         <div class="aktivbuttoncont">
-            <a class="aktivbutton active" href="gg.html" target="_blank">
+            <a class="aktivbutton active" href="{{ url_for('index') }}">
                 Aktivitets Checken
             </a>
             <a class="alkbutton" href="gg.html" target="_blank">
                 Alkohol finder
             </a>
-            <a class="matbutton" href="gg.html" target="_blank">
+            <a class="matbutton" href="{{ url_for('mat') }}">
                 Mat klippet
             </a>
         </div>
@@ -34,7 +34,7 @@
             <div class="dropdown">
                 <button class="dropbtn">Dropdown</button>
                 <div class="dropdown-content">
-                    <a href="profile.html">profile</a>
+                    <a href="{{ url_for('profile') }}">profile</a>
                     <a href="#">Link 2</a>
                     <a href="#">Link 3</a>
                 </div>

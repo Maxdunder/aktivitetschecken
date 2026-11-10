@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -17,6 +17,10 @@ DATABASE = os.path.join(BASE_DIR, "database.db")
 
 
 
+
+@app.route("/images/<path:filename>")
+def images(filename):
+    return send_from_directory(os.path.join(BASE_DIR, "images"), filename)
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
