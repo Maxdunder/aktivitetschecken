@@ -4,98 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="/static/profile.css">
+    <link rel="stylesheet" href="../static/profile.css">
+    <link rel="stylesheet" href="../static/menu.css">
+    <link rel="stylesheet" href="../static/indexstyle.css">
+    <script src="../static/menu.js" defer></script>
 </head>
 <body>
-{% if user %}
-    <header>
-        <button>Edit Profile</button>
-        <button>Activities</button>
+     <div class="header">
+     <div class="sidetitle">
+        <img class="logo" src="/aktivitetschecken/images/Eventhub.png" />
+     </div>
 
-        <h1>{{user['name']}}'s Profile</h1>
+     <div class="aktivbuttoncont">
+         <a class="aktivbutton active" href="{{ url_for('index') }}">
+             Aktivitets Checken
+         </a>
+         <a class="alkbutton" href="gg.html" target="_blank">
+             Alkohol finder
+         </a>
+         <a class="matbutton" href="{{ url_for('mat') }}">
+             Mat klippet
+         </a>
+     </div>
+     <div class="title">
+         <h2>Event Hub</h2>
+         <div class="dropdown">
+             <button class="dropbtn">Dropdown</button>
+             <div class="dropdown-content">
+                 <a href="{{ url_for('profile') }}">profile</a>
+                 <a href="#">Link 2</a>
+                 <a href="#">Link 3</a>
+             </div>
+         </div>
+     </div>
 
-        <img src="{{ user['profile_picture'] or 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' }}" alt="">
-    </header>
+ </div>
+    {% if user %}
 
-    <section class="profile-settings">
+    <div class="layout">
 
-        <!-- Change username -->
-        <form method="POST">
-            <input type="hidden" name="action" value="username">
-        
-            <label>Change Username</label>
-            <input type="text" name="changeusername" placeholder="{{user['name']}}" required>
-        
-            <button type="submit">Confirm Username</button>
-        </form>
+        <!-- Sidebar menu -->
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">‹</button>
 
-        <!-- Change email -->
-        <form method="POST">
-            <input type="hidden" name="action" value="email">
-        
-            <label>Change Email</label>
-            <input type="email" name="changeemail" placeholder="{{user['email']}}" required>
-        
-            <button type="submit">Confirm Email</button>
-        </form>
+            <div class="menu-section">
+                <button class="section-header" aria-expanded="true">
+                    <span class="label">Navigate</span>
+                    <span class="chevron">⌃</span>
+                </button>
+                <ul class="section-items">
+                    <li><a href="{{ url_for('index') }}"><span class="icon">🏠</span><span class="label">Activities</span></a></li>
+                    <li><a href="{{ url_for('mat') }}"><span class="icon">🍽️</span><span class="label">Food</span></a></li>
+                    <li><a href="#tab-account" data-tab="tab-account" class="active"><span class="icon">👤</span><span class="label">Account</span></a></li>
+                    <li><a href="#tab-aktiviteter" data-tab="tab-aktiviteter"><span class="icon">📅</span><span class="label">Dina aktiviteter</span></a></li>
+                </ul>
+            </div>
+        </aside>
 
-        <!-- Change phone number -->
-        <form method="POST">
-            <input type="hidden" name="action" value="phone">
-        
-            <label>Change Phone number</label>
-            <input type="number" name="changephone" placeholder="{{user['phone']}}" required>
-        
-            <button type="submit">Confirm Email</button>
-        </form>
+        <!-- Main content -->
+        <main class="content">
 
-        <!-- Change password -->
-        <form method="POST">
-            <input type="hidden" name="action" value="password">
-        
-            <label>New Password</label>
-            <input type="password" name="changepassword" placeholder="Password123" required>
-        
-            <label>Confirm New Password</label>
-            <input type="password" name="confirmpassword" placeholder="Password123" required>
-        
-            <button type="submit">Confirm Password</button>
-        </form>
+            <!-- Tab: Account -->
+            <div class="tab-panel active" id="tab-account">
+                <!-- Everything below is inside one section called Account -->
+                <div class="menu-section account" id="account">
+                    <button class="section-header" aria-expanded="true">
+                        <span class="label">Account</span>
+                        <span class="chevron">⌃</span>
+                    </button>
 
-        <!-- Change company -->
-        <form method="POST">
-            <input type="hidden" name="action" value="company">
-        
-            <label>Company Name</label>
-            <input type="text" placeholder="{{user['company'] or 'Company name'}}" name="companyname">
-        
-            <button type="submit">Confirm Company</button>
-        </form>
+                    <div class="section-items tall">
 
-        <!-- Change profile picture -->
-        <form method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="picture">
-        
-            <label>Profile Picture</label>
-            <input type="file" name="profile_picture" accept="image/*" required>
-        
-            <button type="submit">Upload Picture</button>
-        </form>
-    
-    </section>
+                        <header>
+                            <button>Edit Profile</button>
+                            <button>Activities</button>
 
-    <footer>
+                            <h1>{{user['name']}}'s Profile</h1>
 
-        <form action="{{ url_for('logout') }}" method="POST">
-            <button type="submit">Logout</button>
-        </form>
+                            <img src="{{ user['profile_picture'] or 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' }}" alt="">
+                        </header>
 
-    </footer>
+                        <section class="profile-settings">
+
+                            <!-- Change username -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="username">
+
+                                <label>Change Username</label>
+                                <input type="text" name="changeusername" placeholder="{{user['name']}}" required>
+
+                                <button type="submit">Confirm Username</button>
+                            </form>
+
+                            <!-- Change email -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="email">
+
+                                <label>Change Email</label>
+                                <input type="email" name="changeemail" placeholder="{{user['email']}}" required>
+
+                                <button type="submit">Confirm Email</button>
+                            </form>
+
+                            <!-- Change phone number -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="phone">
+
+                                <label>Change Phone number</label>
+                                <input type="tel" name="changephone" placeholder="{{user['phone']}}" required>
+
+                                <button type="submit">Confirm Phone</button>
+                            </form>
+
+                            <!-- Change password -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="password">
+
+                                <label>New Password</label>
+                                <input type="password" name="changepassword" placeholder="Password123" required>
+
+                                <label>Confirm New Password</label>
+                                <input type="password" name="confirmpassword" placeholder="Password123" required>
+
+                                <button type="submit">Confirm Password</button>
+                            </form>
+
+                            <!-- Change company -->
+                            <form method="POST">
+                                <input type="hidden" name="action" value="company">
+
+                                <label>Company Name</label>
+                                <input type="text" placeholder="{{user['company'] or 'Company name'}}" name="companyname">
+
+                                <button type="submit">Confirm Company</button>
+                            </form>
+
+                            <!-- Change profile picture -->
+                            <form method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="action" value="picture">
+
+                                <label>Profile Picture</label>
+                                <input type="file" name="profile_picture" accept="image/*" required>
+
+                                <button type="submit">Upload Picture</button>
+                            </form>
+
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Dina aktiviteter -->
+            <div class="tab-panel" id="tab-aktiviteter" hidden>
+                <div class="card">
+                    <h2>Dina aktiviteter</h2>
+                    {% if activities %}
+                    <ul class="activity-list">
+                        {% for a in activities %}
+                        <li>
+                            <strong>{{ a['title'] }}</strong>
+                            <span>{{ a['date'] }} {{ a['time'] }} · {{ a['location'] }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Du har inga aktiviteter än.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <footer>
+                <form action="{{ url_for('logout') }}" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+            </footer>
+
+        </main>
+    </div>
 
     {% else %}
     <a href="{{ url_for('login') }}">Login</a>
     <a href="{{ url_for('registrera') }}">Register</a>
     {% endif %}
-    
+
 </body>
 </html>
