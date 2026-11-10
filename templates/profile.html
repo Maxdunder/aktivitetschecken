@@ -14,7 +14,7 @@
 
         <h1>{{user['name']}}'s Profile</h1>
 
-        <img src="{{ user['profile_picture'] or 'https://www.magnific.com/free-photos-vectors/default-user' }}" alt="">
+        <img src="{{ user['profile_picture'] or 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' }}" alt="">
     </header>
 
     <section class="profile-settings">
@@ -24,7 +24,7 @@
             <input type="hidden" name="action" value="username">
         
             <label>Change Username</label>
-            <input type="text" name="changeusername" required>
+            <input type="text" name="changeusername" placeholder="{{user['name']}}" required>
         
             <button type="submit">Confirm Username</button>
         </form>
@@ -34,7 +34,17 @@
             <input type="hidden" name="action" value="email">
         
             <label>Change Email</label>
-            <input type="email" name="changeemail" required>
+            <input type="email" name="changeemail" placeholder="{{user['email']}}" required>
+        
+            <button type="submit">Confirm Email</button>
+        </form>
+
+        <!-- Change phone number -->
+        <form method="POST">
+            <input type="hidden" name="action" value="phone">
+        
+            <label>Change Phone number</label>
+            <input type="number" name="changephone" placeholder="{{user['phone']}}" required>
         
             <button type="submit">Confirm Email</button>
         </form>
@@ -44,10 +54,10 @@
             <input type="hidden" name="action" value="password">
         
             <label>New Password</label>
-            <input type="password" name="changepassword" required>
+            <input type="password" name="changepassword" placeholder="Password123" required>
         
             <label>Confirm New Password</label>
-            <input type="password" name="confirmpassword" required>
+            <input type="password" name="confirmpassword" placeholder="Password123" required>
         
             <button type="submit">Confirm Password</button>
         </form>
@@ -57,7 +67,7 @@
             <input type="hidden" name="action" value="company">
         
             <label>Company Name</label>
-            <input type="text" name="companyname">
+            <input type="text" placeholder="{{user['company'] or 'Company name'}}" name="companyname">
         
             <button type="submit">Confirm Company</button>
         </form>

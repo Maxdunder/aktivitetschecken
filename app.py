@@ -119,7 +119,59 @@ def get_session_user():
 def profile():
     user = get_session_user()
 
-    print(user['profile_picture'])
+    conn = get_db()
+
+    if request.method == 'POST':
+        action = request.form["action"]
+
+        if action == 'username':
+            username = request.form["changeusername"]
+
+            conn.execute(
+                "UPDATE users SET name = ? WHERE id = ?",
+                (username, session["user_id"])
+            )
+
+        if action == 'email':
+                    email = request.form["changeemail"]
+        
+                    conn.execute(
+                        "UPDATE users SET email = ? WHERE id = ?",
+                        (email, session["user_id"])
+                    )
+
+        if action == 'phone':
+                            phone = request.form["changephone"]
+                
+                            conn.execute(
+                                "UPDATE users SET phone = ? WHERE id = ?",
+                                (phone, session["user_id"])
+                            )
+
+        if action == 'password':
+            newPassword = request.form['changepassword']
+            confrimPassword = request.form['confirmpassword']
+            if confrimPassword == newPassword:
+                newPassword_hash = generate_password_hash(newPassword)
+                conn.execute(
+                    "UPDATE users SET password_hash = ? WHERE id = ?",
+                    (newPassword, session['user_id'])
+                )
+
+        if action == 'company':
+                            company = request.form["companyname"]
+                
+                            conn.execute(
+                                "UPDATE users SET company = ? WHERE id = ?",
+                                (company, session["user_id"])
+                            )
+            
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("profile"))
+    
 
     return render_template("profile.html", user=user)
 

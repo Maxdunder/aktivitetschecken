@@ -5,7 +5,10 @@
         padding: 30px;
     }
     
-    
+    header img{
+        width: 100px;
+        aspect-ratio: 1/1;
+    }
 
     .profile-settings {
         max-width: 500px;
