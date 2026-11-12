@@ -188,7 +188,7 @@ def profile():
 
                 file.save(os.path.join(upload_folder, filename))
 
-                image_path = "/static/profile_pictures/" + filename
+                image_path = "../static/profile_pictures/" + filename
                 conn.execute(
                     "UPDATE users SET profile_picture = ? WHERE id = ?",
                     (image_path, session['user_id'])
