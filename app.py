@@ -184,11 +184,11 @@ def profile():
                 filename = secure_filename(str(uuid.uuid4()) + "." + extension)
 
                upload_folder = os.path.join(BASE_DIR, "static", "profile_pictures")
-                os.makedirs(upload_folder, exist_ok=True)
+               os.makedirs(upload_folder, exist_ok=True)
 
-                file.save(os.path.join(upload_folder, filename))
+               file.save(os.path.join(upload_folder, filename))
 
-                image_path = "/static/profile_pictures/" + filename
+               image_path = "/static/profile_pictures/" + filename
 
                 conn.execute(
                     "UPDATE users SET profile_picture = ? WHERE id = ?",
