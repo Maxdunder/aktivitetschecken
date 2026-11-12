@@ -6,14 +6,17 @@ import json
 import uuid
 from werkzeug.utils import secure_filename
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "database.db")
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
+
 
 @app.route("/images/<path:filename>")
 def images(filename):
     return send_from_directory(os.path.join(BASE_DIR, "images"), filename)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE = os.path.join(BASE_DIR, "database.db")
+
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
@@ -51,6 +54,18 @@ def json_to_database():
     conn.close()
 
 
+def get_session_user():
+    if "user_id" not in session:
+        return None
+    conn = get_db()
+    user = conn.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (session["user_id"],)
+    ).fetchone()
+    conn.close()
+    return user
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -63,7 +78,7 @@ def mat():
 
 @app.route("/registrera", methods=["GET", "POST"])
 def registrera():
-    if "username" in session:
+    if "user_id" in session:
         return redirect(url_for("index"))
     if request.method == "POST":
         username = request.form["username"]
@@ -99,78 +114,60 @@ def login():
         ).fetchone()
         conn.close()
 
-        if user and check_password_hash(user[7], password):
-            session["user_id"] = user[0]
+        if user and check_password_hash(user["password_hash"], password):
+            session["user_id"] = user["id"]
             return redirect(url_for("index"))
         else:
             return "Wrong username or password!"
-    
+
     return render_template("Login.html")
 
-def get_session_user():
-    if "user_id" not in session:
-        return None
-    conn = get_db()
-    user = conn.execute(
-        "SELECT * FROM users WHERE id = ?",
-        (session["user_id"],)
-    ).fetchone()
-    conn.close()
-
-    return user
 
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
     user = get_session_user()
 
-    conn = get_db()
+    if request.method == "POST":
+        if not user:
+            return redirect(url_for("login"))
 
-    if request.method == 'POST':
         action = request.form["action"]
+        conn = get_db()
 
-        if action == 'username':
-            username = request.form["changeusername"]
-
+        if action == "username":
             conn.execute(
                 "UPDATE users SET name = ? WHERE id = ?",
-                (username, session["user_id"])
+                (request.form["changeusername"], session["user_id"])
             )
 
-        if action == 'email':
-            email = request.form["changeemail"]
-        
+        elif action == "email":
             conn.execute(
                 "UPDATE users SET email = ? WHERE id = ?",
-                (email, session["user_id"])
+                (request.form["changeemail"], session["user_id"])
             )
 
-        if action == 'phone':
-            phone = request.form["changephone"]
-                
+        elif action == "phone":
             conn.execute(
                 "UPDATE users SET phone = ? WHERE id = ?",
-                (phone, session["user_id"])
+                (request.form["changephone"], session["user_id"])
             )
 
-        if action == 'password':
-            newPassword = request.form['changepassword']
-            confrimPassword = request.form['confirmpassword']
-            if confrimPassword == newPassword:
-                newPassword_hash = generate_password_hash(newPassword)
+        elif action == "password":
+            new_password = request.form["changepassword"]
+            confirm_password = request.form["confirmpassword"]
+            if new_password == confirm_password:
                 conn.execute(
                     "UPDATE users SET password_hash = ? WHERE id = ?",
-                    (newPassword, session['user_id'])
+                    (generate_password_hash(new_password), session["user_id"])
                 )
 
-        if action == 'company':
-            company = request.form["companyname"]
-                
+        elif action == "company":
             conn.execute(
                 "UPDATE users SET company = ? WHERE id = ?",
-                (company, session["user_id"])
+                (request.form["companyname"], session["user_id"])
             )
 
-        if action == 'picture':
+        elif action == "picture":
             file = request.files["profile_picture"]
 
             if file and file.filename:
@@ -178,29 +175,24 @@ def profile():
                 extension = file.filename.rsplit(".", 1)[-1].lower()
 
                 if extension not in allowed_extensions:
-                    conn.close
+                    conn.close()
                     return "Invalid image format!"
 
                 filename = secure_filename(str(uuid.uuid4()) + "." + extension)
 
                 upload_folder = os.path.join(BASE_DIR, "static", "profile_pictures")
                 os.makedirs(upload_folder, exist_ok=True)
-
                 file.save(os.path.join(upload_folder, filename))
 
-                image_path = "../static/profile_pictures/" + filename
+                image_path = "/static/profile_pictures/" + filename
                 conn.execute(
                     "UPDATE users SET profile_picture = ? WHERE id = ?",
-                    (image_path, session['user_id'])
+                    (image_path, session["user_id"])
                 )
-
-            
 
         conn.commit()
         conn.close()
-
         return redirect(url_for("profile"))
-    
 
     return render_template("profile.html", user=user)
 
