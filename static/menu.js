@@ -25,20 +25,23 @@ tabLinks.forEach(link => {
   });
 });
 
-// Open the tab named in the URL, e.g. /profile#tab-aktiviteter
 if (location.hash) showTab(location.hash.slice(1));
 
 // Collapse / expand the whole sidebar, and remember the choice
 const sidebar = document.getElementById("sidebar");
-try {
-  if (localStorage.getItem("sidebarCollapsed") === "1") {
-    sidebar.classList.add("collapsed");
-  }
-} catch (e) {}
+const sidebarToggle = document.getElementById("sidebarToggle");
 
-document.getElementById("sidebarToggle").addEventListener("click", () => {
-  const collapsed = sidebar.classList.toggle("collapsed");
+if (sidebar && sidebarToggle) {
   try {
-    localStorage.setItem("sidebarCollapsed", collapsed ? "1" : "0");
+    if (localStorage.getItem("sidebarCollapsed") === "1") {
+      sidebar.classList.add("collapsed");
+    }
   } catch (e) {}
-});
+
+  sidebarToggle.addEventListener("click", () => {
+    const collapsed = sidebar.classList.toggle("collapsed");
+    try {
+      localStorage.setItem("sidebarCollapsed", collapsed ? "1" : "0");
+    } catch (e) {}
+  });
+}
