@@ -60,6 +60,7 @@ ALTER TABLE map ADD COLUMN time TEXT;
 ALTER TABLE map ADD COLUMN location TEXT;
 ALTER TABLE map ADD COLUMN marker_image TEXT;
 
+
 """
 
 def get_db():
@@ -129,10 +130,10 @@ def get_map_with_users():
         )
         return [dict(r) for r in rows]
 
+def add_new_column():
+    with get_db() as db:
+        db.execute("ALTER TABLE map ADD COLUMN accepted BOOLEAN DEFAULT FALSE")
+
 if __name__ == "__main__":
-    init_db()
-    print("users:", get_users())
-    print("map:", get_map())
-    print("activities:", get_activities())
-    print("food_drinks:", get_food_drinks())
-    print(get_map_with_users())
+    add_new_column()
+    print("Column added!")
