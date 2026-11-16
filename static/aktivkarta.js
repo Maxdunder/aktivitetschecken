@@ -9,10 +9,11 @@ const map = new maplibregl.Map({
     zoom: 14,
     attributionControl: false
 });
+const activities = await response.json();
+
 activities
     .filter(activity => String(activity.accepted).toLowerCase() !== 'false')
     .forEach(addActivityMarker);
-const fallbackCenter = [17.3147, 62.3898];
 
 let userLocation = null;
 let userMarker = null;
