@@ -391,16 +391,16 @@ function getCategoryClass(category) {
 //besök api backend för att hämta aktiviteter och lägga till dem på kartan
 async function loadActivities() {
     try {
-       const response = await fetch(activitiesJsonUrl);
+        const response = await fetch(activitiesJsonUrl);
         if (!response.ok) {
             throw new Error(`Could not load activities: ${response.status}`);
         }
 
         const activities = await response.json();
 
-        activities.forEach((activity) => {
-            addActivityMarker(activity);
-        });
+        activities
+            .filter(activity => String(activity.accepted).toLowerCase() !== 'false')
+            .forEach(addActivityMarker);
     } catch (error) {
         console.error('Could not load activities:', error);
     }
