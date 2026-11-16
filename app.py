@@ -46,6 +46,7 @@ def json_to_database():
             activity["location"],
             activity["image"],
             activity["markerImage"],
+            activity["accepted"],
             "test",
             "testid"
         ))
