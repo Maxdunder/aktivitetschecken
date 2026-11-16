@@ -10,7 +10,7 @@
         "location": "Hedbergska planen",
         "image": "images/fotboll.jpg",
         "markerImage": "/aktivitetschecken/images/sport.png",
-        "accepted": "false"
+        "accepted": "true"
     },
   {
     "longitude": 17.30373085233,
