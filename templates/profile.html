@@ -168,7 +168,7 @@
                     {% endif %}
                 </div>
                 <button type="button" id="showFormBtn" aria-expanded="false">+ Ny aktivitet</button>
-             <form id="activityForm" method="POST" enctype="multipart/form-data" hidden>
+             <form id="activityForm" method="POST" action="{{ url_for('add_activity') }}" enctype="multipart/form-data" hidden>
                     <div class="input-group">
                         <label for="longitude">longitude</label>
                         <input id="longitude" name="longitude" type="text" required />
