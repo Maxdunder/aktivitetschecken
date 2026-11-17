@@ -284,14 +284,14 @@ def is_admin(user):
     return bool(user and user["admin"])
 
 
-@app.route("/admin/activities")
+@app.route("/admin#activity-requests")
 def admin_activities():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
     return render_template("admin_activities.html", pending=read_json_list(PENDING_FILE))
 
 
-@app.route("/admin/activities/<activity_id>/accept", methods=["POST"])
+@app.route("/admin#activity-requestss/<activity_id>/accept", methods=["POST"])
 def accept_activity(activity_id):
     if not is_admin(get_session_user()):
         return "Forbidden", 403
@@ -311,10 +311,10 @@ def accept_activity(activity_id):
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for("admin_activities"))
+    return redirect(url_for("admin#activity-requests"))
 
 
-@app.route("/admin/activities/<activity_id>/reject", methods=["POST"])
+@app.route("/admin#activity-requests/<activity_id>/reject", methods=["POST"])
 def reject_activity(activity_id):
     if not is_admin(get_session_user()):
         return "Forbidden", 403
@@ -323,7 +323,7 @@ def reject_activity(activity_id):
     remaining = [a for a in pending if a.get("id") != activity_id]
     write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for("admin_activities"))
+    return redirect(url_for("admin#activity-requests"))
 
 
 @app.route("/logout", methods=["POST"])
