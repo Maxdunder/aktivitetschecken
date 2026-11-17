@@ -289,7 +289,7 @@ def is_admin(user):
 def admin_activities():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
-    return render_template("admin", pending=read_json_list(PENDING_FILE))
+return render_template("admin.html")
 
 
 @app.route("/api/admin/pending")
@@ -320,7 +320,7 @@ def accept_activity(activity_id):
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for("admin") + "#activity-requests")
+    return redirect(url_for("admin.html"))
 
 
 @app.route("/admin/activities/<activity_id>/reject", methods=["POST"])
@@ -332,7 +332,7 @@ def reject_activity(activity_id):
     remaining = [a for a in pending if a.get("id") != activity_id]
     write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for("admin") + "#activity-requests")
+    return redirect(url_for("admin.html"))
 
 @app.route("/logout", methods=["POST"])
 def logout():
