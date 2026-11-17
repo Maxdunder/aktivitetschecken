@@ -289,7 +289,7 @@ def is_admin(user):
 def admin_activities():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
-    return render_template("admin")
+    return render_template("admin.html")
 
 
 @app.route("/api/admin/pending")
