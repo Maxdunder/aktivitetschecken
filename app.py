@@ -37,7 +37,7 @@ def json_to_database():
     conn = get_db()
     
 def json_to_database():
-    with open(os.path.join(BASE_DIR, "static", "pending_activities.json"), "r", encoding="utf-8") as file:
+    with open(os.path.join(BASE_DIR, "data", "pending_activities.json"), "r", encoding="utf-8") as file:
         activities = json.load(file)
     conn = get_db()
 
@@ -110,10 +110,6 @@ def index():
 @app.route("/mat")
 def mat():
     return render_template("mat.html")
-
-@app.route("/admin")
-def admin():
-    return render_template("admin.html")
 
 @app.route("/registrera", methods=["GET", "POST"])
 def registrera():
@@ -295,13 +291,7 @@ def admin_activities():
         return "Forbidden", 403
     return render_template("admin", pending=read_json_list(PENDING_FILE))
 
-@app.route("/api/admin/pending")
-def get_pending_activities():
-    if not is_admin(get_session_user()):
-        return {"error": "Forbidden"}, 403
 
-    return read_json_list(PENDING_FILE)
-    
 @app.route("/api/admin/pending")
 def get_pending_activities():
     if not is_admin(get_session_user()):
@@ -310,7 +300,7 @@ def get_pending_activities():
     return {
         "pending": read_json_list(PENDING_FILE),
         "approved_count": len(read_json_list(ACTIVITIES_FILE))
-    }    
+    }   
 @app.route("/admin/<activity_id>/accept", methods=["POST"])
 def accept_activity(activity_id):
     if not is_admin(get_session_user()):
@@ -331,7 +321,7 @@ def accept_activity(activity_id):
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for(("admin") + "#activity-requests"))
+    return redirect(url_for(("admin") + "#activity-requests")
 
 
 @app.route("/admin/<activity_id>/reject", methods=["POST"])
@@ -343,7 +333,7 @@ def reject_activity(activity_id):
     remaining = [a for a in pending if a.get("id") != activity_id]
     write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for(("admin") + "#activity-requests"))
+    return redirect(url_for(("admin") + "#activity-requests")
 
 
 @app.route("/logout", methods=["POST"])
