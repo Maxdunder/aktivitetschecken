@@ -186,7 +186,12 @@
     margin: 0;
     padding: 0;
 }
-
+.activity-thumb {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  background: #f0f0f0;
+}
     .activity-list li {
         display: flex;
         flex-direction: column;
