@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="../static/profile.css">
-    <link rel="stylesheet" href="../static/menu.css">
-    <link rel="stylesheet" href="../static/indexstyle.css">
-    <script src="../static/menu.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='indexstyle.css') }}">
+    <script src="{{ url_for('static', filename='menu.js') }}" defer></script>
 </head>
 <body>
     <div class="header">
         <div class="sidetitle">
-            <img class="logo" src="../images/Eventhub.png" />
+            <img class="logo" src="/images/Eventhub.png" />
         </div>
 
         <div class="aktivbuttoncont">
             <a class="aktivbutton active" href="{{ url_for('index') }}">
                 Aktivitets Checken
             </a>
-            <a class="alkbutton" href="gg.html" target="_blank">
+            <a class="alkbutton" href="#">
                 Alkohol finder
             </a>
             <a class="matbutton" href="{{ url_for('mat') }}">
@@ -54,8 +54,8 @@
                 <ul class="section-items">
                     <li><a href="{{ url_for('index') }}"><span class="icon">🏠</span><span class="label">Activities</span></a></li>
                     <li><a href="{{ url_for('mat') }}"><span class="icon">🍽️</span><span class="label">Food</span></a></li>
-                    <li><a href="#tab-account" data-tab="tab-account" class="active"><span class="icon">👤</span><span class="label">Account</span></a></li>
-                    <li><a href="#tab-aktiviteter" data-tab="tab-aktiviteter"><span class="icon">📅</span><span class="label">Dina aktiviteter</span></a></li>
+                    <li><a href="#tab-account" data-tab="account" class="active"><span class="icon">👤</span><span class="label">Account</span></a></li>
+                    <li><a href="#tab-aktiviteter" data-tab="aktiviteter"><span class="icon">📅</span><span class="label">Dina aktiviteter</span></a></li>
                 </ul>
             </div>
         </aside>
@@ -64,7 +64,7 @@
         <main class="content">
 
             <!-- Tab: Account -->
-            <div class="tab-panel active" id="tab-account">
+            <div class="tab-panel" id="panel-account">
                 <!-- Everything below is inside one section called Account -->
                 <div class="menu-section account" id="account">
                     <button class="section-header" aria-expanded="true">
@@ -151,15 +151,19 @@
             </div>
 
             <!-- Tab: Dina aktiviteter -->
-            <div class="tab-panel" id="tab-aktiviteter" hidden>
+            <div class="tab-panel" id="panel-aktiviteter" hidden>
                 <div class="card">
                     <h2>Dina aktiviteter</h2>
                     {% if activities %}
                     <ul class="activity-list">
                         {% for a in activities %}
                         <li>
+                            {% if a['image'] %}
+                            <img class="activity-thumb" src="{{ a['image'] }}" alt="">
+                            {% endif %}
                             <strong>{{ a['title'] }}</strong>
-                            <span>{{ a['date'] }} {{ a['time'] }} · {{ a['location'] }}</span>
+                            <span>{{ a['date'] }} · {{ a['time'] }} · {{ a['location'] }}</span>
+                            <span>{{ 'Godkänd' if a['accepted'] in [True, 'true'] else 'Väntar på godkännande' }}</span>
                         </li>
                         {% endfor %}
                     </ul>
@@ -167,8 +171,10 @@
                     <p>Du har inga aktiviteter än.</p>
                     {% endif %}
                 </div>
+
                 <button type="button" id="showFormBtn" aria-expanded="false">+ Ny aktivitet</button>
-             <form id="activityForm" method="POST" action="{{ url_for('add_activity') }}" enctype="multipart/form-data" hidden>
+
+                <form id="activityForm" method="POST" action="{{ url_for('add_activity') }}" enctype="multipart/form-data" hidden>
                     <div class="input-group">
                         <label for="longitude">longitude</label>
                         <input id="longitude" name="longitude" type="text" required />
@@ -185,8 +191,14 @@
                     </div>
 
                     <div class="input-group">
-                        <label for="category">kategori, ex: sport</label>
-                        <input id="category" name="category" type="text" required />
+                        <label for="category">kategori</label>
+                        <select id="category" name="category" required>
+                            <option>Sport</option>
+                            <option>Kultur</option>
+                            <option>Natur</option>
+                            <option>Musik</option>
+                            <option>Träffar</option>
+                        </select>
                     </div>
 
                     <div class="input-group">
@@ -209,17 +221,18 @@
                         <input id="location" name="location" type="text" required />
                     </div>
 
-                    <div class="imga">
+                    <div class="input-group">
+                        <label for="imageUpload">Bild</label>
                         <input type="file" name="image" id="imageUpload" accept="image/*">
-                        <img id="image" src="#" name="image" type="text" style="display:flex;" />
+                        <div class="imga">
+                            <img id="preview" alt="Förhandsvisning" hidden>
+                        </div>
                     </div>
 
-                    <input name="accepted" type="hidden" value="false" />
-
                     <button type="submit">Send It!</button>
-
                 </form>
             </div>
+
             <footer>
                 <form action="{{ url_for('logout') }}" method="POST">
                     <button type="submit">Logout</button>
@@ -233,30 +246,39 @@
     <a href="{{ url_for('login') }}">Login</a>
     <a href="{{ url_for('registrera') }}">Register</a>
     {% endif %}
+
     <script>
+        // Show / hide the "new activity" form
         const showFormBtn = document.getElementById("showFormBtn");
-const activityForm = document.getElementById("activityForm");
+        const activityForm = document.getElementById("activityForm");
 
-if (showFormBtn && activityForm) {
-  showFormBtn.addEventListener("click", () => {
-    activityForm.hidden = !activityForm.hidden;
-    showFormBtn.setAttribute("aria-expanded", String(!activityForm.hidden));
-    showFormBtn.textContent = activityForm.hidden ? "+ Ny aktivitet" : "Avbryt";
-  });
-}
-         document.getElementById('imageUpload').addEventListener('change', function () {
-            let file = this.files[0];
-            let reader = new FileReader();
+        if (showFormBtn && activityForm) {
+            showFormBtn.addEventListener("click", () => {
+                activityForm.hidden = !activityForm.hidden;
+                showFormBtn.setAttribute("aria-expanded", String(!activityForm.hidden));
+                showFormBtn.textContent = activityForm.hidden ? "+ Ny aktivitet" : "Avbryt";
+            });
+        }
 
-            reader.onload = function (event) {
-                let base64String = event.target.result;
-                document.getElementById('image').src = base64String;
-                document.getElementById('image').style.display = 'flex';
-                console.log(base64String);
-            };
+        // Image preview
+        const imageUpload = document.getElementById("imageUpload");
+        const preview = document.getElementById("preview");
 
-            reader.readAsDataURL(file);
-        });
+        if (imageUpload && preview) {
+            imageUpload.addEventListener("change", function () {
+                const file = this.files[0];
+                if (!file) {
+                    preview.hidden = true;
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    preview.src = event.target.result;
+                    preview.hidden = false;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
     </script>
 </body>
 </html>
