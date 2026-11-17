@@ -106,6 +106,9 @@ def index():
 def mat():
     return render_template("mat.html")
 
+@app.route("/admin")
+def mat():
+    return render_template("admin.html")
 
 @app.route("/registrera", methods=["GET", "POST"])
 def registrera():
