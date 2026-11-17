@@ -295,7 +295,13 @@ def admin_activities():
         return "Forbidden", 403
     return render_template("admin", pending=read_json_list(PENDING_FILE))
 
+@app.route("/api/admin/pending")
+def get_pending_activities():
+    if not is_admin(get_session_user()):
+        return {"error": "Forbidden"}, 403
 
+    return read_json_list(PENDING_FILE)
+    
 @app.route("/admin/<activity_id>/accept", methods=["POST"])
 def accept_activity(activity_id):
     if not is_admin(get_session_user()):
