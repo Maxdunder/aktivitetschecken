@@ -16,7 +16,7 @@ app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # reject uploads over 5 MB
 ACTIVITIES_FILE = os.path.join(BASE_DIR, "static", "activities.json")
 ACTIVITY_IMAGE_DIR = os.path.join(BASE_DIR, "static", "activity_images")
 ALLOWED_IMAGES = {"png", "jpg", "jpeg", "gif", "webp"}
-MARKERS = {"sport": "/images/sport.png"}
+MARKERS = {"Sport": "/images/sport.png"}
 
 
 @app.route("/images/<path:filename>")
@@ -59,6 +59,14 @@ def json_to_database():
 
     conn.commit()
     conn.close()
+
+
+def load_activities():
+    try:
+        with open(ACTIVITIES_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
 
 
 def get_session_user():
@@ -201,7 +209,14 @@ def profile():
         conn.close()
         return redirect(url_for("profile"))
 
-    return render_template("profile.html", user=user)
+    my_activities = []
+    if user:
+        my_activities = [
+            act for act in load_activities()
+            if act.get("user_id") == session["user_id"]
+        ]
+
+    return render_template("profile.html", user=user, activities=my_activities)
 
 
 @app.route("/add_activity", methods=["GET", "POST"])
@@ -223,7 +238,7 @@ def add_activity():
             file.save(os.path.join(ACTIVITY_IMAGE_DIR, filename))
             image_path = "/static/activity_images/" + filename
 
-        category = request.form["category"]
+        category = request.form["category"].strip().capitalize()
         activity = {
             "latitude": float(request.form["latitude"]),
             "longitude": float(request.form["longitude"]),
@@ -250,7 +265,7 @@ def add_activity():
         with open(ACTIVITIES_FILE, "w", encoding="utf-8") as f:
             json.dump(activities, f, ensure_ascii=False, indent=4)
 
-        return redirect(url_for("profile"))
+        return redirect(url_for("profile") + "#tab-aktiviteter")
 
     return render_template("add_activity.html")
 
