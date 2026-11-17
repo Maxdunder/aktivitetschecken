@@ -13,11 +13,11 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # reject uploads over 5 MB
 
-ACTIVITIES_FILE = os.path.join(BASE_DIR, "static", "activities.json")
+ACTIVITIES_FILE = os.path.join(BASE_DIR, "static", "activities.json")      # approved, shown on the map
+PENDING_FILE = os.path.join(BASE_DIR, "data", "pending_activities.json")   # waiting for an admin
 ACTIVITY_IMAGE_DIR = os.path.join(BASE_DIR, "static", "activity_images")
 ALLOWED_IMAGES = {"png", "jpg", "jpeg", "gif", "webp"}
 MARKERS = {"Sport": "/images/sport.png"}
-MARKERS = {"Kultur": "/images/Kultur.png"}
 
 
 @app.route("/images/<path:filename>")
@@ -62,12 +62,27 @@ def json_to_database():
     conn.close()
 
 
-def load_activities():
+def read_json_list(path):
     try:
-        with open(ACTIVITIES_FILE, encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return []
+
+
+def write_json_list(path, data):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    os.replace(tmp, path)
+
+
+def user_activities(user_id):
+    """Pending activities first, then approved ones, for one user."""
+    pending = [a for a in read_json_list(PENDING_FILE) if a.get("user_id") == user_id]
+    approved = [a for a in read_json_list(ACTIVITIES_FILE) if a.get("user_id") == user_id]
+    return pending + approved
 
 
 def get_session_user():
@@ -212,10 +227,7 @@ def profile():
 
     my_activities = []
     if user:
-        my_activities = [
-            act for act in load_activities()
-            if act.get("user_id") == session["user_id"]
-        ]
+        my_activities = user_activities(session["user_id"])
 
     return render_template("profile.html", user=user, activities=my_activities)
 
@@ -250,25 +262,65 @@ def add_activity():
             "time": request.form["time"],
             "location": request.form["location"],
             "image": image_path,
-            "markerImage": MARKERS.get(category),
+            "markerImage": MARKERS.get(category, "/images/sport.png"),
             "accepted": False,
             "user_id": session["user_id"],
+            "id": str(uuid.uuid4()),
         }
 
-        try:
-            with open(ACTIVITIES_FILE, encoding="utf-8") as f:
-                activities = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            activities = []
-
-        activities.append(activity)
-
-        with open(ACTIVITIES_FILE, "w", encoding="utf-8") as f:
-            json.dump(activities, f, ensure_ascii=False, indent=4)
+        pending = read_json_list(PENDING_FILE)
+        pending.append(activity)
+        write_json_list(PENDING_FILE, pending)
 
         return redirect(url_for("profile") + "#tab-aktiviteter")
 
     return render_template("add_activity.html")
+
+
+def is_admin(user):
+    return bool(user and user["admin"])
+
+
+@app.route("/admin/activities")
+def admin_activities():
+    if not is_admin(get_session_user()):
+        return "Forbidden", 403
+    return render_template("admin_activities.html", pending=read_json_list(PENDING_FILE))
+
+
+@app.route("/admin/activities/<activity_id>/accept", methods=["POST"])
+def accept_activity(activity_id):
+    if not is_admin(get_session_user()):
+        return "Forbidden", 403
+
+    pending = read_json_list(PENDING_FILE)
+    entry = next((a for a in pending if a.get("id") == activity_id), None)
+
+    if entry is not None:
+        entry["accepted"] = True
+
+        # 1. add it to the approved file (this is what the map reads)
+        approved = read_json_list(ACTIVITIES_FILE)
+        approved.append(entry)
+        write_json_list(ACTIVITIES_FILE, approved)
+
+        # 2. remove it from the pending file
+        remaining = [a for a in pending if a.get("id") != activity_id]
+        write_json_list(PENDING_FILE, remaining)
+
+    return redirect(url_for("admin_activities"))
+
+
+@app.route("/admin/activities/<activity_id>/reject", methods=["POST"])
+def reject_activity(activity_id):
+    if not is_admin(get_session_user()):
+        return "Forbidden", 403
+
+    pending = read_json_list(PENDING_FILE)
+    remaining = [a for a in pending if a.get("id") != activity_id]
+    write_json_list(PENDING_FILE, remaining)
+
+    return redirect(url_for("admin_activities"))
 
 
 @app.route("/logout", methods=["POST"])
