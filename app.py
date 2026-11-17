@@ -35,6 +35,11 @@ def json_to_database():
     with open(os.path.join(BASE_DIR, "static", "activities.json"), "r", encoding="utf-8") as file:
         activities = json.load(file)
     conn = get_db()
+    
+def json_to_database():
+    with open(os.path.join(BASE_DIR, "static", "pending_activities.json"), "r", encoding="utf-8") as file:
+        activities = json.load(file)
+    conn = get_db()
 
     for activity in activities:
         conn.execute("""
