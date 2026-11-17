@@ -38,7 +38,7 @@ def json_to_database():
     
 def json_to_database():
     with open(os.path.join(BASE_DIR, "data", "pending_activities.json"), "r", encoding="utf-8") as file:
-        activities = json.load(file)
+        pending_activities = json.load(file)
     conn = get_db()
 
     for activity in activities:
@@ -301,7 +301,8 @@ def get_pending_activities():
         "pending": read_json_list(PENDING_FILE),
         "approved_count": len(read_json_list(ACTIVITIES_FILE))
     }   
-@app.route("/admin/<activity_id>/accept", methods=["POST"])
+
+@app.route("/admin/activities/<activity_id>/accept", methods=["POST"])
 def accept_activity(activity_id):
     if not is_admin(get_session_user()):
         return "Forbidden", 403
@@ -312,29 +313,31 @@ def accept_activity(activity_id):
     if entry is not None:
         entry["accepted"] = True
 
-        # 1. add it to the approved file (this is what the map reads)
         approved = read_json_list(ACTIVITIES_FILE)
         approved.append(entry)
         write_json_list(ACTIVITIES_FILE, approved)
 
-        # 2. remove it from the pending file
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for(("admin") + "#activity-requests")
+    return redirect(url_for("admin") + "#activity-requests")
 
 
-@app.route("/admin/<activity_id>/reject", methods=["POST"])
+@app.route("/admin/activities/<activity_id>/reject", methods=["POST"])
 def reject_activity(activity_id):
     if not is_admin(get_session_user()):
         return "Forbidden", 403
 
     pending = read_json_list(PENDING_FILE)
-    remaining = [a for a in pending if a.get("id") != activity_id]
+
+    remaining = [
+        a for a in pending
+        if a.get("id") != activity_id
+    ]
+
     write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for(("admin") + "#activity-requests")
-
+    return redirect(url_for("admin") + "#activity-requests")
 
 @app.route("/logout", methods=["POST"])
 def logout():
