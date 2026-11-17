@@ -311,7 +311,7 @@ def accept_activity(activity_id):
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for(("admin") + "#activity-requests""))
+    return redirect(url_for(("admin") + "#activity-requests"))
 
 
 @app.route("/admin#activity-requests/<activity_id>/reject", methods=["POST"])
