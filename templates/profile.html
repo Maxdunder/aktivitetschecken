@@ -32,7 +32,7 @@
                 <button class="dropbtn">Dropdown</button>
                 <div class="dropdown-content">
                     <a href="{{ url_for('profile') }}">profile</a>
-                   {% if user['admin'] %}<a href="{{ url_for('admin_activities') }}">Admin</a>{% endif %}
+                   <a href="{{ url_for('admin_activities') }}">Admin</a>
                 </div>
             </div>
         </div>
