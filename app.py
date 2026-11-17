@@ -17,6 +17,7 @@ ACTIVITIES_FILE = os.path.join(BASE_DIR, "static", "activities.json")
 ACTIVITY_IMAGE_DIR = os.path.join(BASE_DIR, "static", "activity_images")
 ALLOWED_IMAGES = {"png", "jpg", "jpeg", "gif", "webp"}
 MARKERS = {"Sport": "/images/sport.png"}
+MARKERS = {"Kultur": "/images/Kultur.png"}
 
 
 @app.route("/images/<path:filename>")
