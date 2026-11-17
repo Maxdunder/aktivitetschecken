@@ -107,7 +107,7 @@ def mat():
     return render_template("mat.html")
 
 @app.route("/admin")
-def mat():
+def admin():
     return render_template("admin.html")
 
 @app.route("/registrera", methods=["GET", "POST"])
