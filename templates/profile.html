@@ -10,34 +10,34 @@
     <script src="../static/menu.js" defer></script>
 </head>
 <body>
-     <div class="header">
-     <div class="sidetitle">
-        <img class="logo" src="../images/Eventhub.png" />
-     </div>
+    <div class="header">
+        <div class="sidetitle">
+            <img class="logo" src="../images/Eventhub.png" />
+        </div>
 
-     <div class="aktivbuttoncont">
-         <a class="aktivbutton active" href="{{ url_for('index') }}">
-             Aktivitets Checken
-         </a>
-         <a class="alkbutton" href="gg.html" target="_blank">
-             Alkohol finder
-         </a>
-         <a class="matbutton" href="{{ url_for('mat') }}">
-             Mat klippet
-         </a>
-     </div>
-     <div class="title">
-         <h2>Event Hub</h2>
-         <div class="dropdown">
-             <button class="dropbtn">Dropdown</button>
-             <div class="dropdown-content">
-                 <a href="{{ url_for('profile') }}">profile</a>
-                 <a href="#">Link 2</a>
-             </div>
-         </div>
-     </div>
+        <div class="aktivbuttoncont">
+            <a class="aktivbutton active" href="{{ url_for('index') }}">
+                Aktivitets Checken
+            </a>
+            <a class="alkbutton" href="gg.html" target="_blank">
+                Alkohol finder
+            </a>
+            <a class="matbutton" href="{{ url_for('mat') }}">
+                Mat klippet
+            </a>
+        </div>
+        <div class="title">
+            <h2>Event Hub</h2>
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('profile') }}">profile</a>
+                    <a href="#">Link 2</a>
+                </div>
+            </div>
+        </div>
 
- </div>
+    </div>
     {% if user %}
 
     <div class="layout">
@@ -167,8 +167,58 @@
                     <p>Du har inga aktiviteter än.</p>
                     {% endif %}
                 </div>
-            </div>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label for="longitude">longitude</label>
+                        <input id="longitude" name="longitude" type="text" required />
+                    </div>
 
+                    <div class="input-group">
+                        <label for="latitude">latitude</label>
+                        <input id="latitude" name="latitude" type="text" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="title">titel</label>
+                        <input id="title" name="title" type="text" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="category">kategori, ex: sport</label>
+                        <input id="category" name="category" type="text" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="description">beskrivning</label>
+                        <input id="description" name="description" type="text" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="date">Datum ex: "Måndag 16 November"</label>
+                        <input id="date" name="date" type="text" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="time">Tid ex: "18:00-20:00"</label>
+                        <input id="time" name="time" type="text" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="location">Plats ex: "baldershov fotbollsplan"</label>
+                        <input id="location" name="location" type="text" required />
+                    </div>
+
+                    <div class="imga">
+                        <input type="file" id="imageUpload" accept="image/*">
+                        <img id="image" src="#" name="image" type="text" style="display:flex;" />
+                    </div>
+
+                    <input name="accepted" type="hidden" value="false" />
+
+                    <button type="submit">Send It!</button>
+
+                </form>
+            </div>
             <footer>
                 <form action="{{ url_for('logout') }}" method="POST">
                     <button type="submit">Logout</button>
@@ -182,6 +232,30 @@
     <a href="{{ url_for('login') }}">Login</a>
     <a href="{{ url_for('registrera') }}">Register</a>
     {% endif %}
+    <script>
+        const showFormBtn = document.getElementById("showFormBtn");
+const activityForm = document.getElementById("activityForm");
 
+if (showFormBtn && activityForm) {
+  showFormBtn.addEventListener("click", () => {
+    activityForm.hidden = !activityForm.hidden;
+    showFormBtn.setAttribute("aria-expanded", String(!activityForm.hidden));
+    showFormBtn.textContent = activityForm.hidden ? "+ Ny aktivitet" : "Avbryt";
+  });
+}
+         document.getElementById('imageUpload').addEventListener('change', function () {
+            let file = this.files[0];
+            let reader = new FileReader();
+
+            reader.onload = function (event) {
+                let base64String = event.target.result;
+                document.getElementById('image').src = base64String;
+                document.getElementById('image').style.display = 'flex';
+                console.log(base64String);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
 </body>
 </html>
