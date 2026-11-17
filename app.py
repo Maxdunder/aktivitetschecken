@@ -329,12 +329,7 @@ def reject_activity(activity_id):
         return "Forbidden", 403
 
     pending = read_json_list(PENDING_FILE)
-
-    remaining = [
-        a for a in pending
-        if a.get("id") != activity_id
-    ]
-
+    remaining = [a for a in pending if a.get("id") != activity_id]
     write_json_list(PENDING_FILE, remaining)
 
     return redirect(url_for("admin") + "#activity-requests")
