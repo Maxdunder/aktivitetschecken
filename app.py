@@ -286,7 +286,7 @@ def is_admin(user):
 
 
 @app.route("/admin")
-def admin_activities():
+def admin():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
     return render_template("admin.html")
