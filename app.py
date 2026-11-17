@@ -265,7 +265,7 @@ def add_activity():
             "time": request.form["time"],
             "location": request.form["location"],
             "image": image_path,
-            "markerImage": MARKERS.get(category, "/images/sport.png"),
+            "markerImage": MARKERS.get(category),
             "accepted": False,
             "user_id": session["user_id"],
             "id": str(uuid.uuid4()),
@@ -288,7 +288,7 @@ def is_admin(user):
 def admin_activities():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
-    return render_template("admin_activities.html", pending=read_json_list(PENDING_FILE))
+    return render_template(("admin") + "#activity-requests", pending=read_json_list(PENDING_FILE))
 
 
 @app.route("/admin#activity-requestss/<activity_id>/accept", methods=["POST"])
@@ -311,7 +311,7 @@ def accept_activity(activity_id):
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for("admin#activity-requests"))
+    return redirect(url_for(("admin") + "#activity-requests""))
 
 
 @app.route("/admin#activity-requests/<activity_id>/reject", methods=["POST"])
@@ -323,7 +323,7 @@ def reject_activity(activity_id):
     remaining = [a for a in pending if a.get("id") != activity_id]
     write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for("admin#activity-requests"))
+    return redirect(url_for(("admin") + "#activity-requests"))
 
 
 @app.route("/logout", methods=["POST"])
