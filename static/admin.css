@@ -10,6 +10,8 @@ body {
     color: #1b304d;
 }
 
+/* SIDEBAR */
+
 .sidebar {
     position: fixed;
     width: 230px;
@@ -55,6 +57,8 @@ nav .active {
     bottom: 20px;
 }
 
+/* MAIN */
+
 main {
     margin-left: 230px;
     padding: 25px;
@@ -81,6 +85,8 @@ h1 + p {
     font-size: 13px;
 }
 
+/* STATISTICS */
+
 .stats {
     display: flex;
     gap: 15px;
@@ -101,14 +107,11 @@ h1 + p {
 }
 
 .card h2 {
-    margin: 8px 0;
+    margin: 8px 0 0;
     font-size: 28px;
 }
 
-.card span {
-    color: #0aa579;
-    font-size: 12px;
-}
+/* ACTIVITY TABLE */
 
 .users {
     overflow-x: auto;
@@ -136,18 +139,34 @@ input {
     min-width: 100px;
 }
 
+/* BUTTONS */
+
 button {
-    padding: 12px 15px;
+    padding: 10px 13px;
     border: none;
     border-radius: 6px;
-    background: #0eaa7d;
     color: white;
     cursor: pointer;
+    font-weight: 600;
 }
 
-button:hover {
+button.approve {
+    background: #0eaa7d;
+}
+
+button.approve:hover {
     background: #078765;
 }
+
+button.reject {
+    background: #e2535d;
+}
+
+button.reject:hover {
+    background: #c83d48;
+}
+
+/* TABLE */
 
 table {
     width: 100%;
@@ -169,42 +188,71 @@ td {
     font-size: 12px;
 }
 
-tr:hover {
+tbody tr:hover {
     background: #f7fbfa;
 }
 
-.active-status,
-.inactive-status {
-    padding: 5px 10px;
-    border-radius: 20px;
+td strong {
+    display: block;
 }
 
-.active-status {
+td small {
+    display: block;
+    margin-top: 5px;
+    color: #8292a5;
+}
+
+/* STATUS */
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.status.pending {
+    color: #946200;
+    background: #fff0c2;
+}
+
+.status.approved {
     color: #087e62;
     background: #c6f0e2;
 }
 
-.inactive-status {
-    color: #d52d39;
+.status.rejected {
+    color: #c52e3b;
     background: #ffd7d9;
 }
 
-footer {
+.actions {
     display: flex;
-    justify-content: space-between;
-    padding: 15px;
+    gap: 7px;
+}
+
+.decision {
+    color: #687d96;
+    font-weight: 600;
+}
+
+/* EMPTY MESSAGE */
+
+.empty-message,
+.note {
+    padding: 14px;
     color: #6b8099;
     font-size: 12px;
 }
 
-footer strong {
-    padding: 8px 12px;
-    border-radius: 5px;
-    background: #0eaa7d;
-    color: white;
+.note {
+    padding-left: 2px;
 }
 
+/* MOBILE */
+
 @media (max-width: 900px) {
+
     .sidebar {
         position: static;
         width: 100%;
@@ -238,3 +286,5 @@ footer strong {
         flex-wrap: wrap;
     }
 }
+
+
