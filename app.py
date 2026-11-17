@@ -11,6 +11,12 @@ DATABASE = os.path.join(BASE_DIR, "database.db")
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # reject uploads over 5 MB
+
+ACTIVITIES_FILE = os.path.join(BASE_DIR, "static", "activities.json")
+ACTIVITY_IMAGE_DIR = os.path.join(BASE_DIR, "static", "activity_images")
+ALLOWED_IMAGES = {"png", "jpg", "jpeg", "gif", "webp"}
+MARKERS = {"sport": "/images/sport.png"}
 
 
 @app.route("/images/<path:filename>")
@@ -196,6 +202,57 @@ def profile():
         return redirect(url_for("profile"))
 
     return render_template("profile.html", user=user)
+
+
+@app.route("/add_activity", methods=["GET", "POST"])
+def add_activity():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        image_path = ""
+        file = request.files.get("image")
+
+        if file and file.filename:
+            extension = file.filename.rsplit(".", 1)[-1].lower()
+            if extension not in ALLOWED_IMAGES:
+                return "Invalid image format!", 400
+
+            filename = str(uuid.uuid4()) + "." + extension
+            os.makedirs(ACTIVITY_IMAGE_DIR, exist_ok=True)
+            file.save(os.path.join(ACTIVITY_IMAGE_DIR, filename))
+            image_path = "/static/activity_images/" + filename
+
+        category = request.form["category"]
+        activity = {
+            "latitude": float(request.form["latitude"]),
+            "longitude": float(request.form["longitude"]),
+            "title": request.form["title"],
+            "category": category,
+            "description": request.form["description"],
+            "date": request.form["date"],
+            "time": request.form["time"],
+            "location": request.form["location"],
+            "image": image_path,
+            "markerImage": MARKERS.get(category, "/images/sport.png"),
+            "accepted": False,
+            "user_id": session["user_id"],
+        }
+
+        try:
+            with open(ACTIVITIES_FILE, encoding="utf-8") as f:
+                activities = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            activities = []
+
+        activities.append(activity)
+
+        with open(ACTIVITIES_FILE, "w", encoding="utf-8") as f:
+            json.dump(activities, f, ensure_ascii=False, indent=4)
+
+        return redirect(url_for("profile"))
+
+    return render_template("add_activity.html")
 
 
 @app.route("/logout", methods=["POST"])
