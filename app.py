@@ -249,7 +249,7 @@ def add_activity():
             "time": request.form["time"],
             "location": request.form["location"],
             "image": image_path,
-            "markerImage": MARKERS.get(category, "/images/sport.png"),
+            "markerImage": MARKERS.get(category),
             "accepted": False,
             "user_id": session["user_id"],
         }
