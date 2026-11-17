@@ -103,99 +103,173 @@
     </main>
 
     <script>
-        const requestList = document.getElementById("request-list");
-        const searchInput = document.getElementById("search");
-        const statusFilter = document.getElementById("status-filter");
+        
+const requestList = document.getElementById("request-list");
+const searchInput = document.getElementById("search");
+const statusFilter = document.getElementById("status-filter");
 
-        // Uppdatera statistiken
-        function updateCounts() {
+let activities = [];
+let approvedCount = 0;
 
-            const rows = [...requestList.querySelectorAll("tr")];
+// Load activities from Flask
+async function loadActivities() {
+    try {
+        const response = await fetch("/api/admin/pending");
 
-            document.getElementById("total-count").textContent =
-                rows.length;
-
-            document.getElementById("pending-count").textContent =
-                rows.filter(row =>
-                    row.dataset.status === "pending"
-                ).length;
-
-            document.getElementById("approved-count").textContent =
-                rows.filter(row =>
-                    row.dataset.status === "approved"
-                ).length;
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
         }
 
-        // Sök och filtrera aktiviteter
-        function filterRequests() {
+        const data = await response.json();
 
-            const search = searchInput.value.toLowerCase();
-            const filter = statusFilter.value;
+        activities = data.pending;
+        approvedCount = data.approved_count;
 
-            let visibleRows = 0;
+        renderActivities();
 
-            requestList.querySelectorAll("tr").forEach(row => {
+        console.log("Activities loaded:", activities);
 
-                const matchesSearch =
-                    row.textContent.toLowerCase().includes(search);
+    } catch (error) {
+        console.error("Could not load activities:", error);
 
-                const matchesStatus =
-                    filter === "all" ||
-                    row.dataset.status === filter;
+        requestList.innerHTML = `
+            <tr>
+                <td colspan="6">Kunde inte hämta aktiviteter.</td>
+            </tr>
+        `;
+    }
+}
 
-                const visible = matchesSearch && matchesStatus;
+// Create table rows
+function renderActivities() {
+    requestList.innerHTML = "";
 
-                row.hidden = !visible;
+    activities.forEach(activity => {
+        const row = document.createElement("tr");
+        row.dataset.status = "pending";
 
-                if (visible) {
-                    visibleRows++;
-                }
-            });
+        const values = [
+            activity.title || "Namnlös aktivitet",
+            activity.user_id || "Okänd",
+            `${activity.date || ""} ${activity.time || ""}`,
+            activity.location || "Okänd plats",
+            "Väntar"
+        ];
 
-            document.getElementById("empty-message").hidden =
-                visibleRows !== 0;
-        }
+        values.forEach((value, index) => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
 
-        // Godkänn eller avslå aktivitet
-        requestList.addEventListener("click", event => {
+            if (index === 4) {
+                cell.className = "status pending";
+            }
 
-            const button = event.target.closest("button");
-
-            if (!button) return;
-
-            const row = button.closest("tr");
-
-            const approved = button.classList.contains("approve");
-
-            const newStatus = approved ? "approved" : "rejected";
-
-            const statusLabel = approved ? "Godkänd" : "Avslagen";
-
-            // Ändra status
-            row.dataset.status = newStatus;
-
-            const status = row.querySelector(".status");
-
-            status.textContent = statusLabel;
-            status.className = "status " + newStatus;
-
-            // Ta bort knapparna efter beslutet
-            row.querySelector(".actions").innerHTML =
-                '<span class="decision">' + statusLabel + '</span>';
-
-            // Uppdatera sidan
-            updateCounts();
-            filterRequests();
-
+            row.appendChild(cell);
         });
 
-        // Sökning
-        searchInput.addEventListener("input", filterRequests);
+        const actions = document.createElement("td");
+        actions.className = "actions";
 
-        // Filtrering
-        statusFilter.addEventListener("change", filterRequests);
+        const approveButton = document.createElement("button");
+        approveButton.textContent = "Godkänn";
+        approveButton.className = "approve";
+        approveButton.type = "button";
 
-        updateCounts();
+        const rejectButton = document.createElement("button");
+        rejectButton.textContent = "Avslå";
+        rejectButton.className = "reject";
+        rejectButton.type = "button";
+
+        actions.append(approveButton, rejectButton);
+        row.appendChild(actions);
+
+        // Store activity ID on the row
+        row.dataset.id = activity.id;
+
+        requestList.appendChild(row);
+    });
+
+    updateCounts();
+    filterRequests();
+}
+
+// Update statistics
+function updateCounts() {
+    document.getElementById("total-count").textContent =
+        activities.length + approvedCount;
+
+    document.getElementById("pending-count").textContent =
+        activities.length;
+
+    document.getElementById("approved-count").textContent =
+        approvedCount;
+}
+
+// Search and filter
+function filterRequests() {
+    const search = searchInput.value.toLowerCase();
+    const filter = statusFilter.value;
+
+    let visibleRows = 0;
+
+    requestList.querySelectorAll("tr").forEach(row => {
+        const matchesSearch =
+            row.textContent.toLowerCase().includes(search);
+
+        const matchesStatus =
+            filter === "all" || filter === row.dataset.status;
+
+        row.hidden = !(matchesSearch && matchesStatus);
+
+        if (!row.hidden) visibleRows++;
+    });
+
+    document.getElementById("empty-message").hidden =
+        visibleRows !== 0;
+}
+
+// Approve or reject activity
+requestList.addEventListener("click", async event => {
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    const row = button.closest("tr");
+    const activityId = row.dataset.id;
+
+    const action = button.classList.contains("approve")
+        ? "accept"
+        : "reject";
+
+    try {
+        button.disabled = true;
+
+        const response = await fetch(
+            `/admin/activities/${encodeURIComponent(activityId)}/${action}`,
+            { method: "POST" }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        // Reload from server to get the updated data
+        await loadActivities();
+
+    } catch (error) {
+        console.error("Could not update activity:", error);
+        alert("Kunde inte uppdatera aktiviteten.");
+        button.disabled = false;
+    }
+});
+
+// Search and filter listeners
+searchInput.addEventListener("input", filterRequests);
+statusFilter.addEventListener("change", filterRequests);
+
+// Initial load
+loadActivities();
+
 
     </script>
 
