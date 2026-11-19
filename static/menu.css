@@ -7,11 +7,6 @@
   flex: 1;
   padding: 24px;
 }
-#.panel-aktiviteter{
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-}
 /* Sidebar */
 .sidebar {
   width: 260px;
