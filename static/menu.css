@@ -69,6 +69,7 @@
 }
 .section-items.tall {
   max-height: 4000px; /* the Account section holds all the forms */
+  overflow-y: auto;
 }
 .section-header[aria-expanded="false"] + .section-items {
   max-height: 0;
