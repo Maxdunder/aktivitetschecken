@@ -30,22 +30,37 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-
+    
 def json_to_database():
     with open(os.path.join(BASE_DIR, "static", "activities.json"), "r", encoding="utf-8") as file:
         activities = json.load(file)
     conn = get_db()
+
     
-def json_to_database():
-    with open(os.path.join(BASE_DIR, "data", "pending_activities.json"), "r", encoding="utf-8") as file:
-        pending_activities = json.load(file)
-    conn = get_db()
 
     for activity in activities:
+
+        exists = conn.execute("""
+            SELECT id FROM map
+            WHERE latitude = ?
+            AND longitude = ?
+            AND title = ?
+            AND date = ?
+        """, (
+            activity["latitude"],
+            activity["longitude"],
+            activity["title"],
+            activity["date"]
+        )).fetchone()
+
+        if exists:
+            continue
+
+
         conn.execute("""
             INSERT INTO map
             (latitude, longitude, title, category, description,
-             date, time, location, image_path, marker_image, user_id, activity_id)
+             date, time, location, image_path, marker_image, accepted, user_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             activity["latitude"],
@@ -59,8 +74,7 @@ def json_to_database():
             activity["image"],
             activity["markerImage"],
             activity["accepted"],
-            "test",
-            "testid"
+            activity["user_id"]
         ))
 
     conn.commit()
@@ -285,10 +299,11 @@ def is_admin(user):
     return bool(user and user["admin"])
 
 
-@app.route("/admin")
+@app.route("/admin", methods=["GET", "POST"])
 def admin():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
+    
     return render_template("admin.html")
 
 
@@ -320,7 +335,9 @@ def accept_activity(activity_id):
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    return redirect(url_for("admin"))
+    
+
+    return redirect(url_for("admin"), json_to_database())
 
 
 @app.route("/admin/activities/<activity_id>/reject", methods=["POST"])
