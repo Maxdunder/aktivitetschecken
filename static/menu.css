@@ -7,7 +7,10 @@
   flex: 1;
   padding: 24px;
 }
-
+#.panel-aktiviteter{
+  overflow-y: auto;
+}
+}
 /* Sidebar */
 .sidebar {
   width: 260px;
