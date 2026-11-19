@@ -339,6 +339,18 @@ def logout():
     session.clear()
     return redirect(url_for("index"))
 
+@app.route("/users", methods=["GET", "POST"])
+def users():
+
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+
+    users = conn.execute("SELECT * FROM users").fetchall()
+
+    conn.close()
+
+    return render_template("users.html", users=users)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

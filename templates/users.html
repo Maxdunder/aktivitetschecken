@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Test</title>
+</head>
+<body>
+    <header>
+
+        <h1>Users</h1>
+
+    </header>
+
+    <section>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Namn</th>
+                    <th>Email</th>
+                    <th>Telefon</th>
+                    <th>Företag</th>
+                    <th>Admin</th>
+                    <th>Skapad</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user['id'] }}</td>
+                    <td>{{ user['name'] }}</td>
+                    <td>{{ user['email'] }}</td>
+                    <td>{{ user['phone'] }}</td>
+                    <td>{{ user['company'] }}</td>
+                    <td>{{ 'Ja' if user['admin'] else 'Nej' }}</td>
+                    <td>{{ user['created_at'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </section>
+</body>
+</html>
