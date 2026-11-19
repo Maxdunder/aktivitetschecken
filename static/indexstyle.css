@@ -533,7 +533,7 @@ body {
     width: calc(100% + 30px);
     height: 130px;
     margin: -15px -15px 12px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .activity-category {

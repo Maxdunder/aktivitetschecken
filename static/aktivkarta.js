@@ -569,3 +569,79 @@ map.addControl(
     new RecenterControl(),
     'top-right'
 );
+
+//make activity images bigger when clicked
+// Click an activity image to see it enlarged. Click outside it, press Esc or hit × to close.
+// Works only on <img class="activity-image">, including images added later.
+(function () {
+  const style = document.createElement("style");
+  style.textContent = `
+    img.activity-image { cursor: zoom-in; }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.85);
+      cursor: zoom-out;
+    }
+    .lightbox[hidden] { display: none; }
+    .lightbox img {
+      max-width: 92vw;
+      max-height: 92vh;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .lightbox button {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+  `;
+  document.head.appendChild(style);
+
+  const overlay = document.createElement("div");
+  overlay.className = "lightbox";
+  overlay.hidden = true;
+  overlay.innerHTML = '<img alt=""><button type="button" aria-label="Stäng">×</button>';
+  document.body.appendChild(overlay);
+
+  const bigImage = overlay.querySelector("img");
+
+  function openLightbox(src, alt) {
+    bigImage.src = src;
+    bigImage.alt = alt || "";
+    overlay.hidden = false;
+  }
+
+  function closeLightbox() {
+    overlay.hidden = true;
+    bigImage.removeAttribute("src");
+  }
+
+  document.addEventListener("click", function (e) {
+    const img = e.target.closest("img.activity-image");
+    if (img) {
+      openLightbox(img.currentSrc || img.src, img.alt);
+      return;
+    }
+    if (!overlay.hidden && (e.target === overlay || e.target.tagName === "BUTTON")) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !overlay.hidden) closeLightbox();
+  });
+})();
