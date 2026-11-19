@@ -345,6 +345,24 @@ def users():
     conn = get_db()
     conn.row_factory = sqlite3.Row
 
+    if request.method == "POST":
+
+        user_id = request.form["user_id"]
+        name = request.form["name"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        company = request.form["company"]
+        admin = 1 if request.form.get("admin") else 0
+
+        conn.execute("""
+            UPDATE users SET name = ?, email = ?, phone = ?, company = ?, admin = ? WHERE id = ? """,
+            (name, email, phone, company, admin, user_id))
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("users"))
+
     users = conn.execute("SELECT * FROM users").fetchall()
 
     conn.close()

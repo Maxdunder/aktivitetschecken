@@ -12,7 +12,8 @@
 
     </header>
 
-    <section>
+    <section class="users">
+
 
         <table>
             <thead>
@@ -24,9 +25,10 @@
                     <th>Företag</th>
                     <th>Admin</th>
                     <th>Skapad</th>
+                    <th>Åtgärder</th>
                 </tr>
             </thead>
-
+        
             <tbody>
                 {% for user in users %}
                 <tr>
@@ -37,11 +39,82 @@
                     <td>{{ user['company'] }}</td>
                     <td>{{ 'Ja' if user['admin'] else 'Nej' }}</td>
                     <td>{{ user['created_at'] }}</td>
+                
+                    <td>
+                        <button class="edit" type="button"
+                            onclick="editUser(this)"
+                            data-id="{{ user['id'] }}"
+                            data-name="{{ user['name'] }}"
+                            data-email="{{ user['email'] }}"
+                            data-phone="{{ user['phone'] }}"
+                            data-company="{{ user['company'] }}"
+                            data-admin="{{ user['admin'] }}">
+                            Redigera
+                        </button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
+
     </section>
+
+    <section id="edit_user" hidden>
+
+        <h2>Redigera användare</h2>
+
+        <form method="POST" action="{{ url_for('users') }}">
+
+            <input type="hidden" name="user_id" id="edit_id">
+
+            <label>Namn</label>
+            <input type="text" name="name" id="edit_name">
+
+            <label>Email</label>
+            <input type="email" name="email" id="edit_email">
+
+            <label>Telefon</label>
+            <input type="text" name="phone" id="edit_phone">
+
+            <label>Företag</label>
+            <input type="text" name="company" id="edit_company">
+
+            <label>Admin</label>
+            <input type="checkbox" name="admin" id="edit_admin">
+
+            <button type="submit">Spara ändringar</button>
+            <button type="button" onclick="closeEdit()">Avbryt</button>
+
+        </form>
+
+    </section>
+
+
+    <script>
+
+        function editUser(button) {
+
+            // Get user information
+            document.getElementById("edit_id").value = button.dataset.id;
+            document.getElementById("edit_name").value = button.dataset.name;
+            document.getElementById("edit_email").value = button.dataset.email;
+            document.getElementById("edit_phone").value = button.dataset.phone;
+            document.getElementById("edit_company").value = button.dataset.company;
+            document.getElementById("edit_admin").checked = button.dataset.admin == "1";
+
+            // Show edit section
+            document.getElementById("edit_user").hidden = false;
+
+            // Update URL
+            window.location.hash = "edit_user";
+        }
+
+        function closeEdit() {
+            document.getElementById("edit_user").hidden = true;
+            history.replaceState(null, "", window.location.pathname);
+        }
+
+    </script>
 </body>
 </html>
