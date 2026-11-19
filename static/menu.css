@@ -7,7 +7,9 @@
   flex: 1;
   padding: 24px;
 }
-
+#.panel-aktiviteter{
+  overflow-y: auto;
+}
 /* Sidebar */
 .sidebar {
   width: 260px;
@@ -64,11 +66,12 @@
   margin: 0;
   padding: 0;
   max-height: 600px;
-  overflow: hidden;
+  overflow-y: auto;
   transition: max-height 0.3s ease;
 }
 .section-items.tall {
   max-height: 4000px; /* the Account section holds all the forms */
+  overflow-y: auto;
 }
 .section-header[aria-expanded="false"] + .section-items {
   max-height: 0;
@@ -152,8 +155,10 @@
   border: 1px solid #e2e6ea;
   border-radius: 10px;
   background: #fff;
+  overflow-y: auto;
 }
 .activity-list {
+  overflow-y: auto;
   list-style: none;
   margin: 0;
   padding: 0;
