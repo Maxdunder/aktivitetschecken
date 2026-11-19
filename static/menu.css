@@ -152,6 +152,7 @@
   border: 1px solid #e2e6ea;
   border-radius: 10px;
   background: #fff;
+  overflow-y: auto;
 }
 .activity-list {
   list-style: none;
