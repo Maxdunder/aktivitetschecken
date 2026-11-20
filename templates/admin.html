@@ -118,6 +118,18 @@
 
             <table>
                 <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Telefon</th>
+                    <th>Företag</th>
+                    <th>Admin</th>
+                    <th>Skapad</th>
+                    <th>Åtgärder</th>
+                </tr>
+            </thead>
+                <thead>
                        {% for user in users %}
                     <tr>
                         <td>{{ user['name'] }}</td>
@@ -130,9 +142,6 @@
                     </tr>
                      {% endfor %}
                 </thead>
-
-                <tbody id="request-list">
-                </tbody>
             </table>
 
             <p id="empty-message" class="empty-message" hidden>
