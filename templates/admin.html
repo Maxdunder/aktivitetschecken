@@ -120,13 +120,13 @@
                 <thead>
                        {% for user in users %}
                     <tr>
-                        <th>Användare</th>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Telefonummer</th>
-                        <th>Företag</th>
-                        <th>Admin</th>
-                        <th>Skapad</th>
+                        <td>{{ user['name'] }}</td>
+                        <td>{{ user['id'] }}</td>
+                        <td>{{ user['email'] }}</td>
+                        <td>{{ user['phone'] }}</td>
+                        <td>{{ user['company'] }}</td>
+                        <td>{{ 'Ja' if user['admin'] else 'Nej' }}</td>
+                        <td>{{ user['created_at'] }}</td>
                     </tr>
                      {% endfor %}
                 </thead>
