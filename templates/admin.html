@@ -94,7 +94,7 @@
         </section>
     </div>
         
-        <div class="tab-panel" id="panel-users">
+<div class="tab-panel" id="panel-users">
         <h1>Användare</h1>
         <p>Granska användarnas aktiviteter och välj om de ska godkännas eller avslås.</p>
 
@@ -132,18 +132,18 @@
                
                   <tbody id="request-list">
                        <thead>
-                    {% for user in users %}
-                    <tr>
-                        <td>{{ user['name'] }}</td>
-                        <td>{{ user['id'] }}</td>
-                        <td>{{ user['email'] }}</td>
-                        <td>{{ user['phone'] }}</td>
-                        <td>{{ user['company'] }}</td>
-                        <td>{{ 'Ja' if user['admin'] else 'Nej' }}</td>
-                        <td>{{ user['created_at'] }}</td>
-                    </tr>
-                    {% endfor %}
-                </thead>
+                            {% for user in users %}
+                        <tr>
+                            <td>{{ user['name'] }}</td>
+                            <td>{{ user['id'] }}</td>
+                            <td>{{ user['email'] }}</td>
+                            <td>{{ user['phone'] }}</td>
+                            <td>{{ user['company'] }}</td>
+                            <td>{{ 'Ja' if user['admin'] else 'Nej' }}</td>
+                            <td>{{ user['created_at'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </thead>
                 </tbody>
             </table>
 
