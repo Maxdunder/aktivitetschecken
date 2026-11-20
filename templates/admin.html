@@ -16,7 +16,7 @@
 
         <nav>
             <a href="#">Översikt</a>
-            <a href="{{ url_for('users') }}">Användare</a>
+            <a href="#tab-users" data-tab="users">
             <a href="#activity-requests" class="active">Aktiviteter</a>
             <a href="#">Mat &amp; dryck</a>
             <a href="https://maxdunder.pythonanywhere.com/">Karta</a>
@@ -32,7 +32,7 @@
             <span></span>
             <p>Admin</p>
         </header>
-<divclass="tab-panel" id="panel-activityrequests">
+<div class="tab-panel" id="panel-activityrequests">
         <h1>Aktivitetsförfrågningar</h1>
         <p>Granska användarnas aktiviteter och välj om de ska godkännas eller avslås.</p>
 
@@ -89,6 +89,54 @@
 
             <p id="empty-message" class="empty-message" hidden>
                 Inga förfrågningar hittades.
+            </p>
+
+        </section>
+    </div>
+        
+        <div class="tab-panel" id="panel-users">
+        <h1>Användare</h1>
+        <p>Granska användarnas aktiviteter och välj om de ska godkännas eller avslås.</p>
+
+        <div class="stats">
+            <div class="card">
+                <p>Antal användare</p>
+                <h2 id="total-count">3</h2>
+            </div>
+        </div>
+
+        <section class="users" id="activity-requests">
+
+            <div class="toolbar">
+                <input
+                    id="search"
+                    type="search"
+                    placeholder="⌕ Sök användare..."
+                    aria-label="Sök användare"
+                >
+            </div>
+
+            <table>
+                <thead>
+                       {% for user in users %}
+                    <tr>
+                        <th>Användare</th>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Telefonummer</th>
+                        <th>Företag</th>
+                        <th>Admin</th>
+                        <th>Skapad</th>
+                    </tr>
+                     {% endfor %}
+                </thead>
+
+                <tbody id="request-list">
+                </tbody>
+            </table>
+
+            <p id="empty-message" class="empty-message" hidden>
+                Inga användare hittades.
             </p>
 
         </section>
