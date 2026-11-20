@@ -129,8 +129,10 @@
                     <th>Åtgärder</th>
                 </tr>
             </thead>
-                <thead>
-                     {% for user in users %}
+               
+                  <tbody id="request-list">
+                       <thead>
+                    {% for user in users %}
                     <tr>
                         <td>{{ user['name'] }}</td>
                         <td>{{ user['id'] }}</td>
@@ -140,9 +142,8 @@
                         <td>{{ 'Ja' if user['admin'] else 'Nej' }}</td>
                         <td>{{ user['created_at'] }}</td>
                     </tr>
-                     {% endfor %}
+                    {% endfor %}
                 </thead>
-                  <tbody id="request-list">
                 </tbody>
             </table>
 
