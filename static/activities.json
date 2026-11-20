@@ -11,7 +11,8 @@
         "image": "images/fotboll.jpg",
         "markerImage": "/aktivitetschecken/images/sport.png",
         "accepted": true,
-        "user_id": 4
+        "user_id": 4,
+        "id": 54
     },
     {
         "longitude": 17.30373085233,
@@ -25,7 +26,8 @@
         "image": "images/image1.jpg",
         "markerImage": "images/kultur.png",
         "accepted": true,
-        "user_id": 4
+        "user_id": 4,
+        "id": 85
     },
     {
         "longitude": 17.30383085233,
@@ -39,64 +41,7 @@
         "image": "images/image1.jpg",
         "markerImage": "images/kultur.png",
         "accepted": true,
-        "user_id": 4
-    },
-    {
-        "latitude": 57.4567,
-        "longitude": 10.5654,
-        "title": "Test",
-        "category": "Musik",
-        "description": "dfghghgfdg gggg ",
-        "date": "2026-10-21",
-        "time": "18:00-21:10",
-        "location": "Test",
-        "image": "/static/activity_images/2e3d28b2-de1c-410e-b6a6-7737b0bf92d9.jpg",
-        "markerImage": null,
-        "accepted": true,
-        "user_id": 3
-    },
-    {
-        "latitude": 50.4567,
-        "longitude": 7.5654,
-        "title": "test2",
-        "category": "Kultur",
-        "description": "dfghghgfdg gggg ",
-        "date": "2026-10-09",
-        "time": "13:00-23:30",
-        "location": "Norraberget",
-        "image": "",
-        "markerImage": null,
-        "accepted": true,
-        "user_id": 3
-    },
-    {
-        "latitude": 50.456745463,
-        "longitude": 10.565434534,
-        "title": "test3",
-        "category": "Sport",
-        "description": "dfghghgfdg gggg dfsdfdsf dsfsdfdsf dsfdsf dsf",
-        "date": "2026-10-09",
-        "time": "18:00-21:10",
-        "location": "TestPlats",
-        "image": "",
-        "markerImage": "/images/sport.png",
-        "accepted": true,
-        "user_id": 3,
-        "id": "dfcf5b97-3a84-408a-a97d-0839db1edeec"
-    },
-    {
-        "latitude": 50.456745463563,
-        "longitude": 10.565434534654,
-        "title": "test4",
-        "category": "Sport",
-        "description": "dfghghgfdg gggg ",
-        "date": "2026-10-09",
-        "time": "18:00-21:10",
-        "location": "TestPlats",
-        "image": "",
-        "markerImage": "/images/sport.png",
-        "accepted": true,
-        "user_id": 3,
-        "id": "f1cd8086-d9a5-45bb-9dcf-567263df0c00"
+        "user_id": 4,
+        "id": 67
     }
 ]

@@ -42,15 +42,9 @@ def json_to_database():
 
         exists = conn.execute("""
             SELECT id FROM map
-            WHERE latitude = ?
-            AND longitude = ?
-            AND title = ?
-            AND date = ?
+            WHERE activity_id = ?
         """, (
-            activity["latitude"],
-            activity["longitude"],
-            activity["title"],
-            activity["date"]
+            activity["id"],
         )).fetchone()
 
         if exists:
@@ -60,8 +54,8 @@ def json_to_database():
         conn.execute("""
             INSERT INTO map
             (latitude, longitude, title, category, description,
-             date, time, location, image_path, marker_image, accepted, user_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             date, time, location, image_path, marker_image, accepted, user_id, activity_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             activity["latitude"],
             activity["longitude"],
@@ -74,7 +68,8 @@ def json_to_database():
             activity["image"],
             activity["markerImage"],
             activity["accepted"],
-            activity["user_id"]
+            activity["user_id"],
+            activity["id"]
         ))
 
     conn.commit()
@@ -118,6 +113,7 @@ def get_session_user():
 
 @app.route("/")
 def index():
+    json_to_database()
     return render_template("index.html")
 
 
@@ -335,9 +331,9 @@ def accept_activity(activity_id):
         remaining = [a for a in pending if a.get("id") != activity_id]
         write_json_list(PENDING_FILE, remaining)
 
-    
+        json_to_database()
 
-    return redirect(url_for("admin"), json_to_database())
+    return redirect(url_for("admin"))
 
 
 @app.route("/admin/activities/<activity_id>/reject", methods=["POST"])
