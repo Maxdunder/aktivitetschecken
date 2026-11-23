@@ -11,6 +11,7 @@
         "image": "images/fotboll.jpg",
         "markerImage": "../images/sport.png",
         "accepted": "true"
+        "user_id": 1
     },
     {
         "longitude": 17.30373085233,
@@ -23,6 +24,8 @@
         "location": "Kulturhuset",
         "image": "../images/image1.jpg",
         "markerImage": "images/kultur.png"
+        "accepted": "true"
+        "user_id": 1
     },
     {
         "longitude": 17.30383085233,
@@ -35,6 +38,8 @@
         "location": "Kulturhuset",
         "image": "images/image1.jpg",
         "markerImage": "../images/kultur.png"
+        "accepted": "true"
+        "user_id": 1
     },
     {
         "latitude": 62.4,
