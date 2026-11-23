@@ -146,7 +146,6 @@ def get_session_user():
 
 @app.route("/")
 def index():
-    json_to_database()
     return render_template("index.html")
 
 
