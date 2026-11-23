@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alkohol finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Alk.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    <script src="../static/aktivkarta.js" defer></script>
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const filterButton = document.getElementById("filterButton");
+        const sidebar = document.querySelector(".sidebar");
+
+        console.log("JavaScript laddat!");
+        console.log("Knapp:", filterButton);
+        console.log("Sidomeny:", sidebar);
+
+        filterButton.addEventListener("click", function() {
+
+            sidebar.classList.toggle("open");
+        });
+
+    });
+</script>
+<body>
+    <!-- Övre navigeringsmeny -->
+    <header>
+        <div class="company-name">
+            Företags namn
+        </div>
+
+        <nav>
+            <a href="#" class="nav-button activity">
+                Aktivitets checken
+            </a>
+
+            <a href="#" class="nav-button alcohol">
+                Alkohol finder
+            </a>
+
+            <a href="#" class="nav-button food">
+                Mat klippet
+            </a>
+        </nav>
+    </header>
+
+    <!-- Sökfält -->
+    <div class="search-bar">
+        <form method="GET" action="/">
+            <input
+                type="text"
+                name="q"
+                placeholder="Sök restaurang..."
+                value="{{ search_query }}"
+            >
+            <button type="submit" class="search-button">⌕</button>
+        </form>
+    </div>
+
+    <!-- Huvudinnehåll -->
+    <main>
+        <div class="Drycker">
+            <!-- Filtermeny vid mindre skärmar -->
+            <div class="filter-toggle">
+                <button id="filterButton" type="button">Filter</button>
+            </div>
+            <!-- Sidomeny -->
+            
+            <aside class="sidebar">
+                <form method="GET" action="/">
+                <div class="restaurant-filters">
+                    <h3>Restauranger</h3>
+
+                <label>
+                    <input type="checkbox" name="restaurant"
+                        value="Bloco"
+                        {% if "Bloco" in selected_restaurants %}checked{% endif %}>
+                    <span>Bloco</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="restaurant"
+                        value="Pitchers"
+                        {% if "Pitchers" in selected_restaurants %}checked{% endif %}>
+                    <span>Pitchers</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="restaurant"
+                        value="O'Learys"
+                        {% if "O'Learys" in selected_restaurants %}checked{% endif %}>
+                    <span>O'Learys</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="restaurant"
+                        value="Svenssons"
+                        {% if "Svenssons" in selected_restaurants %}checked{% endif %}>
+                    <span>Svenssons</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="restaurant"
+                        value="Estreet"
+                        {% if "Estreet" in selected_restaurants %}checked{% endif %}>
+                    <span>Estreet</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="restaurant"
+                        value="GP's"
+                        {% if "GP's" in selected_restaurants %}checked{% endif %}>
+                    <span>GP's</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="restaurant"
+                        value="Blackstone"
+                        {% if "Blackstone" in selected_restaurants %}checked{% endif %}>
+                    <span>Blackstone</span>
+                </label>
+                </div>
+
+
+                <div class="price-filters">
+                <h3>Pris</h3>
+                <label>
+                    <input type="radio" name="sort" value="recommended"
+                        {% if sort_order == "recommended" %}checked{% endif %}>
+                    <span>Rekommenderat</span>
+                </label>
+                <label>
+                    <input type="radio" name="sort" value="descending"
+                        {% if sort_order == "descending" %}checked{% endif %}>
+                    <span>Dyrast - billigast</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="sort" value="ascending"
+                        {% if sort_order == "ascending" %}checked{% endif %}>
+                    <span>Billigast - dyrast</span>
+                </label>
+
+
+                <div class="Dryckestyper">
+                <h3>Dryckestyper</h3>
+
+                    <label>
+                        <input type="checkbox" name="type" value="Öl"
+                            {% if "Öl" in selected_types %}checked{% endif %}>
+                        <span>Öl</span>
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="type" value="Cider"
+                            {% if "Cider" in selected_types %}checked{% endif %}>
+                        <span>Cider</span>
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="type" value="Vin"
+                            {% if "Vin" in selected_types %}checked{% endif %}>
+                        <span>Vin</span>
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="type" value="Drinkar"
+                            {% if "Drinkar" in selected_types %}checked{% endif %}>
+                        <span>Drinkar</span>
+                    </label>
+                </div>
+            </div>
+        
+
+                    <button type="submit" class="filter-submit">Filtrera</button>
+                    <a href="/" class="filter-default">Återställ filter</a>
+                </form>
+            </aside>
+
+
+            <!-- Rekommendationer -->
+            <section class="recommendations">
+
+                <h1>Rekommendationer</h1>
+
+                <div class="restaurant-list">
+                    {% for restaurant in restaurants %}
+
+                    <div class="restaurant">
+
+                        <div class="image-space">
+                            <img src="{{ url_for('static', filename='images/' + restaurant.image) }}"
+                                alt="{{ restaurant.name }}">
+                        </div>
+
+                        <p>{{ restaurant.name }}</p>
+                        <p>{{ restaurant.price }} kr</p>
+                    </div>
+
+            {% endfor %}
+
+            </div>
+        </div>
+        </section>
+        </div>
+        <div class="mapshit">
+            <div class="map-wrapper">
+                <div class="map-inner">
+                    <div id="map"></div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+</body>
+</html>
