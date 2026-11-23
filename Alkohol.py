@@ -65,7 +65,7 @@ def index():
     )
 
     return render_template(
-        "Alk.html",
+        "Alkohol.html",
         restaurants=filtered_restaurants,
         selected_restaurants=selected_restaurants,
         selected_prices=selected_prices,
