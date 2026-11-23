@@ -32,11 +32,8 @@ def get_db():
 
     
 def json_to_database():
-    with open(os.path.join(BASE_DIR, "static", "activities.json"), "r", encoding="utf-8") as file:
-        activities = json.load(file)
-    conn = get_db()
-
-    
+    activities = read_json_list(ACTIVITIES_FILE)
+    conn = get_db() 
 
     for activity in activities:
 
@@ -49,7 +46,6 @@ def json_to_database():
 
         if exists:
             continue
-
 
         conn.execute("""
             INSERT INTO map
@@ -74,7 +70,7 @@ def json_to_database():
 
     conn.commit()
     conn.close()
-
+    write_json_list(ACTIVITIES_FILE, activities)
 
 def read_json_list(path):
     try:
