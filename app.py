@@ -120,6 +120,10 @@ def index():
 @app.route("/mat")
 def mat():
     return render_template("mat.html")
+    
+@app.route("/Alkohol")
+def Alkohol():
+    return render_template("Alkohol.html")
 
 @app.route("/registrera", methods=["GET", "POST"])
 def registrera():
@@ -303,7 +307,7 @@ def admin():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
     
-    return render_template("admin.html",users=users)
+    return render_template("admin.html", users=users)
 
 
 @app.route("/api/admin/pending")
