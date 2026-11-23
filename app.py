@@ -31,22 +31,46 @@ def get_db():
     return conn
 
 
+def update_database():
+    conn = get_db()
+
+    columns = [
+        "accepted INTEGER DEFAULT 1",
+        "user_id INTEGER",
+        "activity_id TEXT"
+    ]
+
+    existing_columns = [
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(map)").fetchall()
+    ]
+
+    for column in columns:
+        column_name = column.split()[0]
+
+        if column_name not in existing_columns:
+            conn.execute(f"ALTER TABLE map ADD COLUMN {column}")
+
+    conn.commit()
+    conn.close()
+
+
 def json_to_database():
     activities = read_json_list(ACTIVITIES_FILE)
     conn = get_db()
 
+    changed = False
+
     for activity in activities:
 
-        # Generate an ID if one is missing
         if not activity.get("id"):
             activity["id"] = str(uuid.uuid4())
+            changed = True
 
         exists = conn.execute("""
             SELECT id FROM map
             WHERE activity_id = ?
-        """, (
-            activity["id"],
-        )).fetchone()
+        """, (activity["id"],)).fetchone()
 
         if exists:
             continue
@@ -76,8 +100,9 @@ def json_to_database():
     conn.commit()
     conn.close()
 
-    # Save generated IDs so they remain consistent
-    write_json_list(ACTIVITIES_FILE, activities)
+    if changed:
+        write_json_list(ACTIVITIES_FILE, activities)
+
 
 def read_json_list(path):
     try:
@@ -123,7 +148,7 @@ def index():
 @app.route("/mat")
 def mat():
     return render_template("mat.html")
-    
+
 @app.route("/Alkohol")
 def Alkohol():
     return render_template("Alkohol.html")
@@ -309,7 +334,7 @@ def admin():
     users = conn.execute("SELECT * FROM users").fetchall()
     if not is_admin(get_session_user()):
         return "Forbidden", 403
-    
+
     return render_template("admin.html", users=users)
 
 
@@ -321,7 +346,7 @@ def get_pending_activities():
     return {
         "pending": read_json_list(PENDING_FILE),
         "approved_count": len(read_json_list(ACTIVITIES_FILE))
-    }   
+    }
 
 @app.route("/admin/activities/<activity_id>/accept", methods=["POST"])
 def accept_activity(activity_id):
