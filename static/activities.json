@@ -23,7 +23,7 @@
         "time": "18:00–20:00",
         "location": "Kulturhuset",
         "image": "../images/image1.jpg",
-        "markerImage": "images/kultur.png"
+        "markerImage": "images/kultur.png",
         "accepted": true,
         "user_id": 1
     },
@@ -37,7 +37,7 @@
         "time": "18:00–20:00",
         "location": "Kulturhuset",
         "image": "images/image1.jpg",
-        "markerImage": "../images/kultur.png"
+        "markerImage": "../images/kultur.png",
         "accepted": true,
         "user_id": 1
     },
