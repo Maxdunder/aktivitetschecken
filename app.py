@@ -30,12 +30,16 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-    
+
 def json_to_database():
     activities = read_json_list(ACTIVITIES_FILE)
-    conn = get_db() 
+    conn = get_db()
 
     for activity in activities:
+
+        # Generate an ID if one is missing
+        if not activity.get("id"):
+            activity["id"] = str(uuid.uuid4())
 
         exists = conn.execute("""
             SELECT id FROM map
@@ -50,7 +54,8 @@ def json_to_database():
         conn.execute("""
             INSERT INTO map
             (latitude, longitude, title, category, description,
-             date, time, location, image_path, marker_image, accepted, user_id, activity_id)
+             date, time, location, image_path, marker_image,
+             accepted, user_id, activity_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             activity["latitude"],
@@ -61,15 +66,17 @@ def json_to_database():
             activity["date"],
             activity["time"],
             activity["location"],
-            activity["image"],
-            activity["markerImage"],
-            activity["accepted"],
-            activity["user_id"],
+            activity.get("image", ""),
+            activity.get("markerImage"),
+            activity.get("accepted", True),
+            activity.get("user_id"),
             activity["id"]
         ))
 
     conn.commit()
     conn.close()
+
+    # Save generated IDs so they remain consistent
     write_json_list(ACTIVITIES_FILE, activities)
 
 def read_json_list(path):
