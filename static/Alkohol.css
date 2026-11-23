@@ -1,0 +1,768 @@
+
+/* Grundinställningar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+}
+
+/* Övre navigeringsmeny */
+header {
+    height: 80px;
+    background-color: #91C99A;
+    display: flex;
+    align-items: center;
+    padding: 50px 30px;
+    border-bottom: 3px solid #75B581;
+    position: relative;
+}
+
+.company-name {
+    color: #24482D;
+    font-size: 22px;
+    white-space: nowrap;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    align-items: flex-start;
+}
+
+.nav-button {
+    width: 207px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 0 12px 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+
+.activity {
+    background-color: #2700e8;
+    height: 48px;
+    
+}
+
+.alcohol {
+    background-color: #00610b;
+    height: 70px;
+    font-size: 20px;    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); 
+}
+
+.food {
+    background-color: red;
+    height: 48px;
+}
+
+/* Sökfält */
+.search-bar {
+    height: 57px;
+    background-color: #D8EEDB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.search-bar input {
+    width: 256px;
+    height: 38px;
+    border: none;
+    border-radius: 12px;
+    padding: 0 40px 0 15px;
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+}
+
+.search-button {
+    position: absolute;
+    left: calc(50% + 100px);
+    background: none;
+    border: none;
+    font-size: 23px;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Huvudinnehåll */
+main {
+    padding: 21px 17px;
+}
+
+.Drycker {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+/* Sidomeny */
+.sidebar {
+    width: 400px;
+    min-width: 400px;
+    height: 100%;
+    background-color: #dce9dc;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.Dryckestyper {
+    padding-top: 9px;
+}
+
+.restaurant-filters,
+.price-filters,
+.Dryckestyper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #315c3a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.filter-submit:hover {
+    background-color: #527e58;
+}
+
+.filter-default {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #315c3a;
+    text-decoration: none;
+    font-size: 16px;
+}
+.sidebar form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: start;
+}
+
+
+.sidebar form > button,
+.sidebar form > a {
+    grid-column: 1 / -1;
+}
+
+.sidebar label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Checkbox */
+.sidebar input {
+    appearance: none;
+    width: 27px;
+    height: 27px;
+    border: 3px solid #315c3a;
+    background-color: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.sidebar input:checked {
+    background-color: #315c3a;
+    box-shadow: inset 0 0 0 4px #dce9dc;
+}
+
+/* Restaurangernas namn */
+.sidebar span {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: #315c3a;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    padding: 4px;
+    font-size: 16px;
+}
+
+
+.sidebar label span {
+    flex: 1;
+}
+
+/* Rekommendationsrutan */
+.recommendations {
+    width: 745px;
+    min-height: 322.38px;
+    background-color: #315c3a;
+    border-radius: 11px;
+    margin-top: 0;
+    padding: 28px 15px 15px 15px;
+    color: white;
+    position: absolute;
+    right: 25%;
+    transform: translateX(25%);
+}
+
+.recommendations h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+/* Restauranglista */
+.restaurant-list {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.restaurant {
+    width: 153px;
+    text-align: center;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.image-space {
+    width: 153px;
+    height: 150px;
+}
+
+.restaurant p {
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+.mapshit {
+    display: grid;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    gap: 16px;
+    
+    
+    
+}
+.map-wrapper {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    margin-top: 12px;
+    height: 100%;
+    border-radius: 12px;
+    border: 3px solid #75B581;
+}
+
+.map-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+.maplibregl-ctrl-attrib {
+    display: none;
+    font-size: 1px;
+    opacity: 0.75;
+    height: 0px;
+    width: 0px;
+    visibility: hidden;
+}
+
+    .maplibregl-ctrl-attrib:hover {
+        opacity: 1;
+    }
+
+@media  (min-width: 1600px) {
+    .recommendations {
+        right: 50%;
+        transform: translateX(50%);
+    }
+}
+
+/* Mindre skärmar */
+@media  (max-width: 1335px) {
+
+    header {
+        height: 70px;
+        padding: 40px 30px;
+    }
+
+    .company-name {
+        font-size: 18px;
+    }
+
+    .nav-button {
+        scale: 0.9;
+        gap: 5px;
+        margin-top: -5px;
+    }
+
+    nav {
+        gap: 15px;
+    }
+
+    .alcohol {
+        height: 65px;
+        padding-bottom: 15px;
+    }
+
+    .search-bar {
+        height: 48px;
+    }
+
+    .search-bar input {
+        width: 220px;
+        height: 32px;
+    }
+
+    .search-button {
+        left: calc(50% + 85px);
+        font-size: 20px;
+        align-items: center;
+    }
+    
+    .page-title {
+        height: 40px;
+    }
+
+    .page-title span {
+        font-size: 18px;
+    }
+
+    main {
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .sidebar {
+        width: 400px;
+        min-width: 400px;
+        height: 100%;
+    }
+
+    .recommendations {
+        width: 650px;
+        min-height: 340px;
+    }
+
+    .restaurant {
+        width: 130px;
+    }
+
+    .image-space {
+        width: 130px;
+        height: 130px;
+    }
+
+    .restaurant p {
+        font-size: 21px;
+    }
+}
+
+.filter-toggle {
+    display: none;
+}
+
+.filter-toggle button {
+    width: 150px;
+    height: 40px;
+    background-color: #315c3a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Surfplatta och mindre */
+@media (max-width: 1230px) {
+
+    .Drycker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .filter-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        display: none;
+        width: 100%;
+        max-width: 745px;
+        min-width: 0;
+        height: auto;
+    }
+
+    .price-filters {
+        left: 0;
+        transform: translateX(0);
+    }
+
+    .sidebar.open {
+        display: flex;
+    }
+
+    .recommendations {
+        position: static;
+        transform: none;
+        width: 100%;
+        max-width: 745px;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    header {
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 30px;
+        gap: 20px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+        position: static;
+        transform: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .company-name {
+        align-self: left;
+    }
+
+    .nav-button {
+        border-radius: 12px;
+        scale: 0.9;
+    }
+
+    .alcohol {
+        padding-bottom: 0;
+        scale:1;
+        box-shadow: 6px rgba(0, 0, 0, 0.5);
+    }
+}
+
+@media (max-width: 670px) {
+    
+    .restaurant-list {
+        display: flex;
+        justify-content: space-around;
+        gap: 30px;
+        flex-wrap: wrap;
+        scale: 0.9;
+    }
+}
+
+@media (max-width: 335px) {
+    .recommendations h1 {
+        text-align: center;
+        scale: 0.8;
+        margin-top: 20px;
+    }
+}
+
+/* ---------- Kategori-chips ---------- */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+    .chip::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+.chip-sport {
+    background: #C6E8D5;
+    color: #176b45;
+}
+
+    .chip-sport::before {
+        background: #176b45;
+    }
+
+.chip-kultur {
+    background: #F1EBFF;
+    color: #5B21B6;
+}
+
+    .chip-kultur::before {
+        background: #7C3AED;
+    }
+
+.chip-traffar {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+    .chip-traffar::before {
+        background: #D97706;
+    }
+
+.chip-natur {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+    .chip-natur::before {
+        background: #16A34A;
+    }
+
+.chip-musik {
+    background: #FCE7F3;
+    color: #9D174D;
+}
+
+    .chip-musik::before {
+        background: #DB2777;
+    }
+.maplibregl-ctrl-group {
+    border: none !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
+}
+.user-marker {
+  width: 18px;
+  height: 18px;
+  background: #ff3b30;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.25);
+}
+.location-marker {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    padding: 4px;
+    background-color: #176b45;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    place-items: center;
+    transition: transform 0.2s ease;
+}
+
+.location-marker:hover {
+    transform: scale(1.15);
+}
+
+.location-marker-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Category colors */
+.marker-sport {
+    background-color: #176b45;
+}
+
+.marker-kultur {
+    background-color: #894ca5;
+}
+
+.marker-natur {
+    background-color: #438c4c;
+}
+
+.marker-musik {
+    background-color: #9D174D;
+}
+
+.marker-default {
+    background-color: #555555;
+}
+
+.maplibregl-popup-content {
+    padding: 15px 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+}
+
+.custom-marker {
+    cursor: pointer;
+}
+
+.marker-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+    padding: 8px 12px 8px 8px;
+    color: #ffffff;
+    background-color: #176b45;
+    border: 3px solid #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-8px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.marker-card::after {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    content: "";
+    border-top: 12px solid #176b45;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    transform: translateX(-50%);
+}
+
+.marker-card:hover {
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.35);
+    transform: translateY(-12px) scale(1.05);
+}
+
+.marker-icon {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    color: #176b45;
+    background-color: #ffffff;
+    background-size: cover;
+    border-radius: 50%;
+    place-items: center;
+    font-size: 18px;
+}
+
+.marker-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.marker-title {
+    font-size: 14px;
+}
+
+.marker-description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+}
+
+.activity-popup {
+    width: 270px;
+    overflow: hidden;
+    color: #26332c;
+    font-family: Arial, sans-serif;
+}
+
+.activity-image {
+    display: block;
+    width: calc(100% + 30px);
+    height: 130px;
+    margin: -15px -15px 12px;
+    object-fit: contain;
+}
+
+.activity-category {
+    display: inline-block;
+    padding: 4px 8px;
+    color: #176b45;
+    background-color: #e5f1e9;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.activity-title {
+    margin: 10px 0 6px;
+    font-size: 19px;
+}
+
+.activity-description {
+    margin: 0 0 12px;
+    color: #58635d;
+    line-height: 1.4;
+}
+
+.activity-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 15px;
+    color: #465149;
+    font-size: 13px;
+}
+
+.activity-button {
+    width: 100%;
+    padding: 10px;
+    color: #ffffff;
+    background-color: #194DE5;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.activity-button:hover {
+    background-color: #125537;
+}
+.aktivbuttoncont {
+    display: flex;
+    gap: 10px; /* space between the buttons */
+    align-self: start; /* don't auto-center vertically... */
+    margin-top: -8px; /* ...move the buttons down manually instead */
+}
