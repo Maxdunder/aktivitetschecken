@@ -25,9 +25,14 @@ def images(filename):
     return send_from_directory(os.path.join(BASE_DIR, "images"), filename)
 
 
+
 def get_db():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(
+        DATABASE,
+        timeout=30
+    )
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA busy_timeout = 30000")
     return conn
 
 
