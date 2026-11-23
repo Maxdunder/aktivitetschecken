@@ -9,10 +9,8 @@
         "time": "14:00–16:00",
         "location": "Hedbergska planen",
         "image": "images/fotboll.jpg",
-        "markerImage": "/aktivitetschecken/images/sport.png",
-        "accepted": true,
-        "user_id": 4,
-        "id": 54
+        "markerImage": "../images/sport.png",
+        "accepted": "true"
     },
     {
         "longitude": 17.30373085233,
@@ -23,11 +21,8 @@
         "date": "Söndag 13 oktober",
         "time": "18:00–20:00",
         "location": "Kulturhuset",
-        "image": "images/image1.jpg",
-        "markerImage": "images/kultur.png",
-        "accepted": true,
-        "user_id": 4,
-        "id": 85
+        "image": "../images/image1.jpg",
+        "markerImage": "images/kultur.png"
     },
     {
         "longitude": 17.30383085233,
@@ -39,9 +34,79 @@
         "time": "18:00–20:00",
         "location": "Kulturhuset",
         "image": "images/image1.jpg",
-        "markerImage": "images/kultur.png",
+        "markerImage": "../images/kultur.png"
+    },
+    {
+        "latitude": 62.4,
+        "longitude": 17.3,
+        "title": "ggs fotboll",
+        "category": "Sport",
+        "description": "kom och spela dålig fotboll",
+        "date": "Måndag 16 November",
+        "time": "18:00-20:00",
+        "location": "baldershov fotbollsplan",
+        "image": "/static/activity_images/f10fefed-a69b-4537-afaf-9be6b16c3bd2.jpg",
+        "markerImage": "../images/sport.png",
         "accepted": true,
-        "user_id": 4,
-        "id": 67
+        "user_id": 1
+    },
+    {
+        "latitude": 62.38,
+        "longitude": 17.26,
+        "title": "Måla fula saker",
+        "category": "Kultur",
+        "description": "alla nekade österikiska målare kan komma och förverkeliga sin dröm",
+        "date": "Måndag 16 November",
+        "time": "18:00-20:00",
+        "location": "Min källare",
+        "image": "/static/activity_images/9a2a7b5f-84b2-47ab-b40e-5a9acfb45ed5.jpg",
+        "markerImage": "/images/Kultur.png",
+        "accepted": true,
+        "user_id": 1
+    },
+    {
+        "latitude": 62.37,
+        "longitude": 17.28,
+        "title": "Stene",
+        "category": "Natur",
+        "description": "kom och se det mest intresanta i Sundsvall",
+        "date": "Måndag 16 November",
+        "time": "18:00-20:00",
+        "location": "Stadsparken",
+        "image": "/static/activity_images/56a173a2-7d28-4ed6-a179-ff617ea54985.jpg",
+        "markerImage": "/images/sport.png",
+        "accepted": true,
+        "user_id": 1,
+        "id": "5c2954d4-e6b3-4bd0-8adc-f1007e6dd260"
+    },
+    {
+        "latitude": 62.26798,
+        "longitude": 17.35,
+        "title": "singel",
+        "category": "Träffar",
+        "description": "kom hem till mig",
+        "date": "Måndag 16 November",
+        "time": "18:00-20:00",
+        "location": "min säng",
+        "image": "/static/activity_images/29c4be14-fbcb-43ed-88a3-3a5c32e93fb9.jpg",
+        "markerImage": null,
+        "accepted": true,
+        "user_id": 1,
+        "id": "a3cb37e8-d82c-468a-856c-4a5bcd7452ee"
+    },
+    {
+        "latitude": 62.2,
+        "longitude": 17.23,
+        "title": "öron tortyr",
+        "category": "Musik",
+        "description": "ttt",
+        "date": "Måndag 16 November",
+        "time": "18:00-20:00",
+        "location": "stora torget",
+        "image": "/static/activity_images/0d4b5275-f003-4ef7-ab30-5fc8eb1621b5.jpg",
+        "markerImage": null,
+        "accepted": true,
+        "user_id": 1,
+        "id": "8a416146-97ed-4930-8f95-18345c10926e"
     }
 ]
