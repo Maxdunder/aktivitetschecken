@@ -299,8 +299,10 @@ def is_admin(user):
 def admin():
     if not is_admin(get_session_user()):
         return "Forbidden", 403
-    
-    return render_template("admin.html")
+     conn = get_db()
+     conn.row_factory = sqlite3.Row
+     users = conn.execute("SELECT * FROM users").fetchall()
+    return render_template("admin.html",users=users)
 
 
 @app.route("/api/admin/pending")
