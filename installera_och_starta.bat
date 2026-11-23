@@ -79,8 +79,8 @@ if errorlevel 1 (
 )
 
 echo.
-echo [4/4] Starting main.py...
-"%VENV_PYTHON%" main.py
+echo [4/4] Starting app.py...
+"%VENV_PYTHON%" app.py
 if errorlevel 1 (
     echo ERROR: The application exited with an error.
     goto :fail
