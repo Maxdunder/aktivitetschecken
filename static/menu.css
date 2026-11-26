@@ -91,7 +91,9 @@
   width: 24px;
   text-align: center;
 }
-
+.users{
+backgound-color: white;
+}
 /* Account section */
 .account {
   border: 1px solid #e2e6ea;
