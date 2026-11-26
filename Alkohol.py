@@ -4,7 +4,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 restaurants = [
-    {"name": "Estreet", "price": 120, "image": "../images/Vin_Estreet.webp"},
+    {"name": "Estreet", "price": 120, "image": "../images/Vin_Estreet.webp", "menu": "meny/Meny_Estreet.pdf"},
     {"name": "Pitchers", "price": 75, "image": "../images/Öl_Pitcher.png"},
     {"name": "O'Learys", "price": 95, "image": "../images/Öl_O-Learys.jpg"},
     {"name": "Bloco", "price": 110, "image": "../images/Drink_bloco.png"}
