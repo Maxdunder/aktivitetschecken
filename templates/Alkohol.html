@@ -200,13 +200,15 @@
 
                         <p>{{ restaurant.name }}</p>
                         <p>{{ restaurant.price }} kr</p>
+                        {% if restaurant.menu %}
+                            <a href="{{ url_for('static', filename=restaurant.menu) }}" class="menu-button" target="_blank" rel="noopener noreferrer">
+                            Se meny
+                            </a>
+                        {% endif %}
                     </div>
-
-            {% endfor %}
-
-            </div>
-        </div>
-        </section>
+                    {% endfor %}
+                </div>
+            </section>
         </div>
         <div class="mapshit">
             <div class="map-wrapper">
