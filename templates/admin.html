@@ -19,7 +19,7 @@
             <a href="#">Översikt</a>
             <a href="#tab-users" data-tab="users">Användare</a>
             <a href="#tab-activityrequests" data-tab="activityrequests" class="active">Väntande aktiviteter</a>
-            <a href="#allactivitys">Alla aktiviteter</a>
+            <a href="#tab-allactivitys">Alla aktiviteter</a>
             <a href="#">Mat &amp; dryck</a>
             <a href="https://maxdunder.pythonanywhere.com/">Karta</a>
             <a href="#">Inställningar</a>
@@ -151,6 +151,68 @@
 
             <p id="empty-message" class="empty-message" hidden>
                 Inga användare hittades.
+            </p>
+
+        </section>
+    </div>
+        <div class="tab-panel" id="panel-allactivitys" hidden>
+    
+        <h1>Aktivitetsförfrågningar</h1>
+        <p>alla aktiviteter</p>
+
+        <div class="stats">
+            <div class="card">
+                <p>Alla aktiviteter</p>
+                <h2 id="total-count">3</h2>
+            </div>
+
+            <div class="card">
+                <p>Väntar på svar</p>
+                <h2 id="pending-count">3</h2>
+            </div>
+
+            <div class="card">
+                <p>Godkända</p>
+                <h2 id="approved-count">0</h2>
+            </div>
+        </div>
+
+        <section class="allactivitys" id="panel-allactivitys">
+
+            <div class="toolbar">
+                <input
+                    id="search"
+                    type="search"
+                    placeholder="⌕ Sök aktivitet eller användare..."
+                    aria-label="Sök aktivitet eller användare"
+                >
+
+                <select id="status-filter">
+                    <option value="all">Alla statusar</option>
+                    <option value="pending">Väntar</option>
+                    <option value="approved">Godkänd</option>
+                    <option value="rejected">Avslagen</option>
+                </select>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aktivitet</th>
+                        <th>Användare</th>
+                        <th>Datum</th>
+                        <th>Plats</th>
+                        <th>företag</th>
+                        <th>Åtgärder</th>
+                    </tr>
+                </thead>
+
+                <tbody id="request-list">
+                </tbody>
+            </table>
+
+            <p id="empty-message" class="empty-message" hidden>
+                Inga förfrågningar hittades.
             </p>
 
         </section>
